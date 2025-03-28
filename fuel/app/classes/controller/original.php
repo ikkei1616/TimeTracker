@@ -24,6 +24,9 @@ class Controller_Original extends Controller
 {
   public function action_insert()
   {
-    echo "hello world";
+    DB::insert("users")->set(array(
+      "name"=> " テスト4",
+      "passward"=> "test4",
+    ))->execute();
   }
 }
