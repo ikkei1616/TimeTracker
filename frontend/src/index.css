@@ -15,8 +15,9 @@ img {
   max-width: 100%;
 }
 
-.header-after::after {
-  display: flex;
+.gradationUnderBar::after {
+  display: block;
+  position: relative;
   content:"";
   width:100%;
   height:3px;
