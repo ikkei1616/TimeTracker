@@ -4,12 +4,12 @@ import SignUpForm from "../components/SignUpForm"
 
 
 const SignUp = () => {
+ 
   return (
     <div>
       <Title/>
-      <SignUpForm/>
+      <SignUpForm />
     </div>
-    
   )
 }
 
