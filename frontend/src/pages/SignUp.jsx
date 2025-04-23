@@ -4,12 +4,14 @@ import SignUpForm from "../components/SignUpForm"
 
 
 const SignUp = () => {
+
+ 
   return (
-    <div>
+    <div  className="flex flex-col items-center  h-screen ">
       <Title/>
-      <SignUpForm/>
+      <SignUpForm />
     </div>
-    
+
   )
 }
 
