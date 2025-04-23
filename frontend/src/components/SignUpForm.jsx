@@ -21,8 +21,8 @@ const SignUpForm = () => {
   
   return (
     <div className="flex flex-col text-center   w-111 p-12">
-      <div className="text-4xl font-bold">
-        <span className="gradationUnderBar  inline-block">SignUp</span>
+      <div className="text-5xl font-bold">
+        <span className="gradationUnderBar  inline-block ">SignUp</span>
       </div>
       <AuthInput value={name} setFunction={setName} fieldName="name" />
       <AuthInput value={email} setFunction={setEmail} fieldName="email" />
