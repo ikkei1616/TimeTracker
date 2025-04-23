@@ -13,7 +13,7 @@ const AuthInput = ({value,setFunction,fieldName}) => {
   }
 
   return (
-    <div className="mt-4 rounded-xl bg-gradient-to-r from-mainRed to-mainBlue p-0.5">
+    <div className="mt-6 rounded-xl bg-gradient-to-r from-mainRed to-mainBlue p-0.5">
       <input
         type="text"
         placeholder={field}
