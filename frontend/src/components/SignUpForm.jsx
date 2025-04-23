@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {useState,useEffect} from "react";
 import AuthInput from "./AuthInput";
@@ -42,6 +43,7 @@ const SignUpForm = () => {
       </button>
       <div> {response && <p>Response: {JSON.stringify(response)}</p>}</div>
     </div>   
+
   )
 }
 
