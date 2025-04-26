@@ -25,6 +25,32 @@ class Controller_Api_Auth extends Controller_Rest
         ]);
     }
 
+    //ログイン機能
+    public function post_login()
+    {
+        $date = json_decode(file_get_contents("php://input"), true);
+        \Log::debug('受信データ: ' . print_r(json_decode(file_get_contents("php://input"), true), true));
+        // 受け取ったデータを表示（必要に応じてデバッグ）
+    
+
+        if (isset($date["name"],$date["pass"])) {
+            $result =true;
+            $name = $date["name"];
+            $pass = $date["pass"];
+
+            if (Auth::login($name,$pass)) {
+                \Log::debug('Login Success');
+                $response = array("status"=>"success","message"=>$date,"result"=>$result);
+            } else {
+                $response = array("status"=>"false","message"=>$date,"result"=>$result);
+            }
+
+        } else {
+            $result = false;
+            $response = array("status"=>"false","message"=>$date,"result"=>$result);
+        }
+        return $this-> response($response);
+    }
     
 
     //POSTのテスト
