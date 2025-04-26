@@ -12,6 +12,7 @@ export const sendPostRequest = async ({pass,email,name,setResponse}) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(postData),
+      credentials: 'include' 
     });
 
     const data = await res.json();
@@ -21,4 +22,40 @@ export const sendPostRequest = async ({pass,email,name,setResponse}) => {
     setResponse('Error occurred');
   }
 };
+
+
+export const signIn = async (name,pass,setResponse) => {
+  const PostData = {
+    name:name,
+    pass:pass,
+  };
+
+  try {
+    const res = await fetch("http://localhost/api/auth/login", {
+      method: "POST",
+      headers:{
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(PostData),
+      credentials: "include"
+    });
+
+    const data = await res.json();
+    setResponse(data.result);
+  } catch (error) {
+    console.error("Error",error);
+    setResponse("Error occurred");
+  }
+};
+
+
+export const signInCheck = async ({setIsSignIn})=>{
+  const res = await fetch("http://localhost/api/auth/checkSignIn",{ 
+    method:"GET",
+    credentials: "include",});
+  const data =await  res.json();
+  setIsSignIn(data.result);
+  
+
+}
 

@@ -11,6 +11,7 @@ class Controller_Api_Auth extends Controller_Rest
         header('Access-Control-Allow-Origin: http://localhost:5173'); 
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS'); 
         header('Access-Control-Allow-Headers: Content-Type');
+        header('Access-Control-Allow-Credentials: true');
 
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
             exit; // Preflightリクエストはここで終了
@@ -25,6 +26,34 @@ class Controller_Api_Auth extends Controller_Rest
         ]);
     }
 
+    //ログイン機能
+    public function post_login()
+    {
+        $date = json_decode(file_get_contents("php://input"), true);
+        \Log::debug('受信データ: ' . print_r(json_decode(file_get_contents("php://input"), true), true));
+        // 受け取ったデータを表示（必要に応じてデバッグ）
+    
+
+        if (isset($date["name"],$date["pass"])) {
+            $result =true;
+            $name = $date["name"];
+            $pass = $date["pass"];
+
+            if (Auth::login($name,$pass)) {
+                \Log::debug('Login Success');
+                $response = array("status"=>"success","message"=>$date,"result"=>$result);
+                Session::set('is_signed_in',true);
+                \Log::debug(Session::get('is_signed_in'));
+            } else {
+                $response = array("status"=>"false","message"=>$date,"result"=>$result);
+            }
+
+        } else {
+            $result = false;
+            $response = array("status"=>"false","message"=>$date,"result"=>$result);
+        }
+        return $this-> response($response);
+    }
     
 
     //POSTのテスト
@@ -50,6 +79,13 @@ class Controller_Api_Auth extends Controller_Rest
     
         // レスポンスを返す
         $response = array('status' => 'success', 'message' => $date,"isError"=> $result);
+        return $this->response($response);
+    }
+
+    public function action_checkSignIn()
+    {
+        $is_signed_in = Session::get('is_signed_in');
+        $response = array("result"=>$is_signed_in);
         return $this->response($response);
     }
 }
