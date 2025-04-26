@@ -1,11 +1,12 @@
 import React from 'react';
-import Title from "../components/Title"
+import Title from "../components/Title";
+import SignInForm from "../components/SignInForm";
 
 const  SignIn = () => {
   return (
-    <div>
+    <div className="flex flex-col items-center h-screen">
       <Title/>
-      aaaa
+      <SignInForm/>
     </div>
   )
 }
