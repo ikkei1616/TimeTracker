@@ -26,9 +26,9 @@ const SignUpForm = () => {
       <div className="text-5xl font-bold">
         <span className="gradationUnderBar  inline-block ">SignUp</span>
       </div>
-      <AuthInput value={name} setFunction={setName} fieldName="name" />
+      <AuthInput value={name} setFunction={setName} fieldName="username" />
       <AuthInput value={email} setFunction={setEmail} fieldName="email" />
-      <AuthInput value={pass} setFunction={setPass} fieldName="pass"/>
+      <AuthInput value={pass} setFunction={setPass} fieldName="password"/>
       <SubmitButton isFilled={isFilled} handleClick={()=>{sendPostRequest({pass,email,name,setResponse})}} text="Register"/>
       <div> {response && <p>Response: {JSON.stringify(response)}</p>}</div>
     </div>   
