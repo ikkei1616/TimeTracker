@@ -5,7 +5,7 @@ import App from './pages/App'
 import SignUp from "./pages/SignUp"
 import SignIn from "./pages/signIn"
 import Test from "./pages/Test"
-
+import Timer from "./pages/Timer"
 import {
   createBrowserRouter,
   RouterProvider,
@@ -15,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App/>,
+  },
+  {
+    path: "/timer",
+    element: <Timer/>,
   },
   {
     path:"/signUp",
