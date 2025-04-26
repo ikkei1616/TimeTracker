@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './pages/App'
 import SignUp from "./pages/SignUp"
-
+import SignIn from "./pages/signIn"
 import Test from "./pages/Test"
 
 import {
@@ -23,7 +23,11 @@ const router = createBrowserRouter([
   {
     path:"/test",
     element:<Test/>
-  }
+  },
+  {
+    path:"/signIn",
+    element:<SignIn/>
+  },
 ]);
 
 

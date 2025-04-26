@@ -2,6 +2,7 @@
 import React from 'react';
 import {useState,useEffect} from "react";
 import AuthInput from "./AuthInput";
+import SubmitButton from "./SubmitButton";
 import {sendPostRequest}  from "../features/auth/api";
 
 const SignUpForm = () => {
@@ -25,22 +26,10 @@ const SignUpForm = () => {
       <div className="text-5xl font-bold">
         <span className="gradationUnderBar  inline-block ">SignUp</span>
       </div>
-      <AuthInput value={name} setFunction={setName} fieldName="name" />
+      <AuthInput value={name} setFunction={setName} fieldName="username" />
       <AuthInput value={email} setFunction={setEmail} fieldName="email" />
-      <AuthInput value={pass} setFunction={setPass} fieldName="pass"/>
-      <button 
-        type="submit"
-        onClick={()=>sendPostRequest({name,pass,email,setResponse})}
-        className={isFilled? 
-          "mt-4 rounded-xl p-2 bg-gradient-to-r from-mainRed to-mainBlue text-white font-bold" 
-          :
-          "mt-4 rounded-xl p-2 bg-gray-400 text-white font-bold" 
-        }
-        
-        disabled={!isFilled} 
-      >
-        Register
-      </button>
+      <AuthInput value={pass} setFunction={setPass} fieldName="password"/>
+      <SubmitButton isFilled={isFilled} handleClick={()=>{sendPostRequest({pass,email,name,setResponse})}} text="Register"/>
       <div> {response && <p>Response: {JSON.stringify(response)}</p>}</div>
     </div>   
 
