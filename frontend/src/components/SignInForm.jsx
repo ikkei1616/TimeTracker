@@ -3,7 +3,7 @@ import React from 'react'
 import {useState,useEffect} from "react";
 import AuthInput from "./AuthInput";
 import SubmitButton from './SubmitButton';
-import {login} from "../features/auth/api";
+import {signIn} from "../features/auth/api";
 import { useNavigate } from "react-router";
 
 
@@ -23,7 +23,7 @@ const SignInForm = () => {
 
   useEffect(() => {
     if (response === true) {
-      navigate("/");
+      navigate("/timer");
     }
   }, [response]);
   
@@ -35,7 +35,7 @@ const SignInForm = () => {
       </div>
       <AuthInput value={name} setFunction={setName} fieldName="username" />
       <AuthInput value={pass} setFunction={setPass} fieldName="password"/>
-      <SubmitButton text="SignIn" isFilled={isFilled}  handleClick={()=>{login({name,pass,setResponse})}}/>
+      <SubmitButton text="SignIn" isFilled={isFilled}  handleClick={()=>{signIn(name,pass,setResponse)}}/>
       <div>{response && <p>ReSPONSE : {JSON.stringify(response)}</p>}</div>
     </div>
   )
