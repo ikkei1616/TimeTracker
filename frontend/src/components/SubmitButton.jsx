@@ -1,12 +1,12 @@
 import React from 'react';
-import { sendPostRequest } from '../features/auth/api';
 
 
-const SubmitButton = ({name,pass,email,setResponse,isFilled}) => {
+
+const SubmitButton = ({isFilled,handleClick,text}) => {
   return (
     <button 
       type="submit"
-      onClick={()=>sendPostRequest({name,pass,email,setResponse})}
+      onClick={handleClick}
       className={
         isFilled? 
           "mt-4 rounded-xl p-2 bg-gradient-to-r from-mainRed to-mainBlue text-white font-bold" 
@@ -15,7 +15,7 @@ const SubmitButton = ({name,pass,email,setResponse,isFilled}) => {
       }
       disabled={!isFilled} 
     >
-      Register
+      {text}
     </button>
   )
 }

@@ -29,7 +29,7 @@ const SignUpForm = () => {
       <AuthInput value={name} setFunction={setName} fieldName="name" />
       <AuthInput value={email} setFunction={setEmail} fieldName="email" />
       <AuthInput value={pass} setFunction={setPass} fieldName="pass"/>
-      <SubmitButton name={name} pass={pass} email={email} setResponse={setResponse} isFilled={isFilled}/>
+      <SubmitButton isFilled={isFilled} handleClick={()=>{sendPostRequest({pass,email,name,setResponse})}} text="Register"/>
       <div> {response && <p>Response: {JSON.stringify(response)}</p>}</div>
     </div>   
 
