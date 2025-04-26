@@ -11,6 +11,7 @@ class Controller_Api_Auth extends Controller_Rest
         header('Access-Control-Allow-Origin: http://localhost:5173'); 
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS'); 
         header('Access-Control-Allow-Headers: Content-Type');
+        header('Access-Control-Allow-Credentials: true');
 
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
             exit; // Preflightリクエストはここで終了
@@ -41,6 +42,8 @@ class Controller_Api_Auth extends Controller_Rest
             if (Auth::login($name,$pass)) {
                 \Log::debug('Login Success');
                 $response = array("status"=>"success","message"=>$date,"result"=>$result);
+                Session::set('is_signed_in',true);
+                \Log::debug(Session::get('is_signed_in'));
             } else {
                 $response = array("status"=>"false","message"=>$date,"result"=>$result);
             }
@@ -76,6 +79,13 @@ class Controller_Api_Auth extends Controller_Rest
     
         // レスポンスを返す
         $response = array('status' => 'success', 'message' => $date,"isError"=> $result);
+        return $this->response($response);
+    }
+
+    public function action_checkSignIn()
+    {
+        $is_signed_in = Session::get('is_signed_in');
+        $response = array("result"=>$is_signed_in);
         return $this->response($response);
     }
 }
