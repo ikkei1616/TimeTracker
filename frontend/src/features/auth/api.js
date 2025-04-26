@@ -12,6 +12,7 @@ export const sendPostRequest = async ({pass,email,name,setResponse}) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(postData),
+      credentials: 'include' 
     });
 
     const data = await res.json();
@@ -23,7 +24,7 @@ export const sendPostRequest = async ({pass,email,name,setResponse}) => {
 };
 
 
-export const login = async ({name,pass,setResponse}) => {
+export const signIn = async (name,pass,setResponse) => {
   const PostData = {
     name:name,
     pass:pass,
@@ -36,6 +37,7 @@ export const login = async ({name,pass,setResponse}) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(PostData),
+      credentials: "include"
     });
 
     const data = await res.json();
@@ -46,4 +48,14 @@ export const login = async ({name,pass,setResponse}) => {
   }
 };
 
+
+export const signInCheck = async ({setIsSignIn})=>{
+  const res = await fetch("http://localhost/api/auth/checkSignIn",{ 
+    method:"GET",
+    credentials: "include",});
+  const data =await  res.json();
+  setIsSignIn(data.result);
+  
+
+}
 
