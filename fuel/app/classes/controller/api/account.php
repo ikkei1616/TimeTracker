@@ -37,19 +37,22 @@ class Controller_Api_Account extends Controller_Rest
         Log::debug('受信データ: ' . print_r(json_decode(file_get_contents("php://input"), true), true));
 
         if (!isset($data["name"],$data["pass"])) {
-            return $this ->error("フォームの入力が不正です。")
+            return $this ->error("フォームの入力が不正です。");
         }
 
         $name = $data["name"];
         $pass = $data["pass"];
 
-        if (Auth::login($name,$pass)) {
-            // ユーザーidを取得
-            $user_id = DB::select("id")->from("users")->where("pass","=",$pass)->execute();
-            Session::set("is_signed_in",true);
+        if (Auth::login($name,$pass)) {            
+            $current_user = Auth::get_user_id($name,$pass);
+            if (!isset($current_user[1])){
+                throw new Exception("アカウントが存在しないのにログインできちゃった");
+            }
+            $user_id = $current_user[1];
             Session::set("current_user_id",$user_id);
+            return $this-> success(null,"ログインに成功しました",200);
         } else {
-            return $this->error("ログインに失敗しました。")
+            return $this->error("ログインに失敗しました。");
         }
         
     }
@@ -74,7 +77,7 @@ class Controller_Api_Account extends Controller_Rest
 
         //名前の形式が正しいか
         if (count($name) < 1 ) {
-            return $this->validationError("ユーザーネームを入力してください")
+            return $this->validationError("ユーザーネームを入力してください");
         }
         
         //emailの形式が正しいか確認
