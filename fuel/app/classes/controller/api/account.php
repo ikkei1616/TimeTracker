@@ -32,50 +32,45 @@ class Controller_Api_Account extends Controller_Rest
     //ログイン機能
     public function post_login()
     {
-        $date = json_decode(file_get_contents("php://input"), true);
-        Log::debug('受信データ: ' . print_r(json_decode(file_get_contents("php://input"), true), true));
+        $data = json_decode(file_get_contents("php://input"), true);
         // 受け取ったデータを表示（必要に応じてデバッグ）
+        Log::debug('受信データ: ' . print_r(json_decode(file_get_contents("php://input"), true), true));
 
-
-
-
-        if (isset($date["name"], $date["pass"])) {
-            $result = true;
-            $name = $date["name"];
-            $pass = $date["pass"];
-
-            if (Auth::login($name, $pass)) {
-                Log::debug('Login Success');
-                $response = array("status" => "success", "message" => $date, "result" => $result);
-                Session::set('is_signed_in', true);
-                Log::debug(Session::get('is_signed_in'));
-            } else {
-                $response = array("status" => "false", "message" => $date, "result" => $result);
-            }
-        } else {
-            $result = false;
-            $response = array("status" => "false", "message" => $date, "result" => $result);
+        if (!isset($data["name"],$data["pass"])) {
+            return $this ->error("フォームの入力が不正です。")
         }
-        return $this->response($response);
+
+        $name = $data["name"];
+        $pass = $data["pass"];
+
+        if (Auth::login($name,$pass)) {
+            // ユーザーidを取得
+            $user_id = DB::select("id")->from("users")->where("pass","=",$pass)->execute();
+            Session::set("is_signed_in",true);
+            Session::set("current_user_id",$user_id);
+        } else {
+            return $this->error("ログインに失敗しました。")
+        }
+        
     }
 
 
     //POSTのテスト
     public function post_create()
     {
-        $date = json_decode(file_get_contents("php://input"), true);
+        $data = json_decode(file_get_contents("php://input"), true);
         Log::debug('受信データ: ' . print_r(json_decode(file_get_contents("php://input"), true), true));
         // 受け取ったデータを表示（必要に応じてデバッグ）
         $result = "";
 
         //リクエストデータが正しいか確認
-        if (!isset($date["name"], $date["pass"], $date["email"])) {
+        if (!isset($data["name"], $data["pass"], $data["email"])) {
             return $this->error("リクエストが不正です");
         }
 
-        $name = $date["name"];
-        $password = $date["pass"];
-        $email = $date["email"];
+        $name = $data["name"];
+        $password = $data["pass"];
+        $email = $data["email"];
 
         //名前の形式が正しいか
         if (count($name) < 1 ) {
