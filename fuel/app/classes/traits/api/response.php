@@ -28,9 +28,8 @@ trait Traits_Api_Response
       // データが配列の場合はレスポンスにマージ
       if (is_array($data)) {
         $response = array_merge($response, $data);
-      } elseif ($data !== null) {
-        // 配列でない場合は 'data' キーに格納
-        $response['data'] = $data;
+      } else {
+        throw new Exception("レスポンスのデータは配列である必要があります");
       }
 
       return $this->response($response, $code);
