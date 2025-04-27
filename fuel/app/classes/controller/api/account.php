@@ -68,6 +68,7 @@ class Controller_Api_Account extends Controller_Rest
         // 受け取ったデータを表示（必要に応じてデバッグ）
         $result = "";
 
+        //リクエストデータが正しいか確認
         if (!isset($date["name"], $date["pass"], $date["email"])) {
             return $this->error("リクエストが不正です");
         }
@@ -76,7 +77,17 @@ class Controller_Api_Account extends Controller_Rest
         $password = $date["pass"];
         $email = $date["email"];
 
+        //名前の形式が正しいか
+        if (count($name) < 1 ) {
+            return $this->validationError("ユーザーネームを入力してください")
+        }
+        
+        //emailの形式が正しいか確認
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return $this->validationError("メールアドレスの形式が不正です");
+        }
 
+        //既存ユーザーかどうか確認
         $existUsers = DB::select("email")
             ->from("users")
             ->where("email", "=", $email)
