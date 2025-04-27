@@ -6,7 +6,7 @@ export const sendPostRequest = async ({pass,email,name,setResponse}) => {
   };
 
   try {
-    const res = await fetch('http://localhost/api/auth/create', {
+    const res = await fetch('http://localhost/api/account/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ export const signIn = async (name,pass,setResponse) => {
   };
 
   try {
-    const res = await fetch("http://localhost/api/auth/login", {
+    const res = await fetch("http://localhost/api/account/login", {
       method: "POST",
       headers:{
         "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export const signIn = async (name,pass,setResponse) => {
 
 
 export const signInCheck = async ({setIsSignIn})=>{
-  const res = await fetch("http://localhost/api/auth/checkSignIn",{ 
+  const res = await fetch("http://localhost/api/account/checkSignIn",{ 
     method:"GET",
     credentials: "include",});
   const data =await  res.json();
