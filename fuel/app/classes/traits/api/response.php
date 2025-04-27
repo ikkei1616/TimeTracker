@@ -54,4 +54,62 @@ trait Traits_Api_Response
 
     return $this->response($response, $code);
   }
+
+  ////////////////////////////////////////////////////////
+
+  /**
+   * バリデーションエラーレスポンスを返す
+   * 
+   * @param string $message エラーメッセージ
+   * @return Response
+   */
+  protected function validationError($message = 'Validation failed')
+  {
+    return $this->error($message, 422);
+  }
+
+  /**
+   * 認証エラーレスポンスを返す
+   * 
+   * @param string $message エラーメッセージ
+   * @return Response
+   */
+  protected function unauthorizedError($message = 'Unauthorized')
+  {
+    return $this->error($message, 401);
+  }
+
+  /**
+   * 権限エラーレスポンスを返す
+   * 
+   * @param string $message エラーメッセージ
+   * @return Response
+   */
+  protected function forbiddenError($message = 'Forbidden')
+  {
+    return $this->error($message, 403);
+  }
+
+  /**
+   * リソース未検出レスポンスを返す
+   * 
+   * @param string $message エラーメッセージ
+   * @return Response
+   */
+  protected function notFoundError($message = 'Resource not found')
+  {
+    return $this->error($message, 404);
+  }
+
+  /**
+   * サーバーエラーレスポンスを返す
+   * 
+   * @param string $message エラーメッセージ
+   * @param mixed $errors 詳細エラー情報
+   * @return Response
+   */
+  protected function serverError($message = 'Server error')
+  {
+    return $this->error($message, 500);
+  }
 }

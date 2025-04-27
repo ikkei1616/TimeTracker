@@ -69,7 +69,7 @@ class Controller_Api_Account extends Controller_Rest
         $result = "";
 
         if (!isset($date["name"], $date["pass"], $date["email"])) {
-            return $this->error("リクエストが不正です", 400);
+            return $this->error("リクエストが不正です");
         }
 
         $name = $date["name"];
@@ -84,7 +84,7 @@ class Controller_Api_Account extends Controller_Rest
             ->as_array();
 
         if (count($existUsers) > 0) {
-            return$this->error("このメールアドレスは既に使用されています", 409);
+            return $this->error("このメールアドレスは既に使用されています", 409);
         }
 
         try {
@@ -93,7 +93,7 @@ class Controller_Api_Account extends Controller_Rest
         } catch (Exception $e) {
             // エラーハンドリング
             Log::debug('Error: ' . $e->getMessage());
-            return $this->error("アカウント作成失敗", null, 500);
+            return $this->serverError("アカウント作成失敗");
         }
     }
 
