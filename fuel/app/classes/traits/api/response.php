@@ -20,10 +20,8 @@ trait Traits_Api_Response
 
     // レスポンスの基本情報
     {
-      $response = [
-        'status' => 'success',
-        'message' => $message,
-      ];
+      $response["status"] = "success";
+      $response["message"] = $message; 
 
       // データが配列の場合はレスポンスにマージ
       if (is_array($data)) {
