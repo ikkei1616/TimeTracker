@@ -27,7 +27,8 @@ trait Traits_Api_Response
 
       // データが配列の場合はレスポンスにマージ
       if (is_array($data)) {
-        $response = array_merge($response, $data);
+        $response["tasks"] = $data;
+        // $response = array_merge($response, $data);
       } else {
         throw new Exception("レスポンスのデータは配列である必要があります");
       }
