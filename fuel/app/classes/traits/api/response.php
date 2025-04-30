@@ -13,10 +13,11 @@ trait Traits_Api_Response
    */
   protected function success($data = null, $message = 'Success', $code = 200, $sendServerTime = true)
   {
+    
     // サーバー時間をレスポンスに含める場合
     if ($sendServerTime) {
       $current_time = new DateTime();
-      $current_time = $current_time-> format(DateTime::ATOM);
+      $current_time = $current_time->format(DateTime::ATOM);
       $response['server_time'] =  $current_time ;
     }
 
@@ -25,13 +26,12 @@ trait Traits_Api_Response
       $response["status"] = "success";
       $response["message"] = $message; 
 
-      // データが配列の場合はレスポンスにマージ
+      //データが配列の場合はレスポンスにマージ
       if (is_array($data)) {
         $response["tasks"] = $data;
         // $response = array_merge($response, $data);
-      } else {
-        throw new Exception("レスポンスのデータは配列である必要があります");
-      }
+      } 
+
 
       return $this->response($response, $code);
     }
