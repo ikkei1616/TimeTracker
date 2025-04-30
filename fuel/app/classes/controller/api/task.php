@@ -52,12 +52,9 @@ class Controller_Api_Task extends Controller_Rest
           "user_id" => $user_id,
           "start_time" => $start_time,
         )
-      );
+      )->execute();
 
-
-      return $this->success($response_data,"タスクの開始成功",201,true);
-
-      
+      return $this->success($response_data, "タスクの開始成功", 201, true);
     } catch (Exception $e) {
 
       Log::debug("Error", $e->getMessage());
