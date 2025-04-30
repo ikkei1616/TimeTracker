@@ -76,7 +76,7 @@ class Controller_Api_Account extends Controller_Rest
         $email = $data["email"];
 
         //名前の形式が正しいか
-        if (count($name) < 1 ) {
+        if (strlen($name) < 1 ) {
             return $this->validationError("ユーザーネームを入力してください");
         }
         
