@@ -68,16 +68,13 @@ class Controller_Api_Task extends Controller_Rest
     $current_time = new DateTime;
     $current_time = $current_time->format(DateTime::ATOM);
     Log::debug($current_time);
-    $current_user_id = 5;
-    // $current_user_id = Session::get("current_user_id");
-    Log::debug("current_user_id",$current_user_id);
+    Log::debug("current_user_id".print_r($current_user_id,true));
 
     try {
       DB::update("tasks")->set(["end_time" => $current_time])->where("end_time", "IS", DB::expr('NULL'))->and_where("user_id","=",$current_user_id)->execute();
       return $this->success(null, "Success", 200, false);
     } catch (Exception $e) {;
-      Log::debug("Error:", $e->getMessage());
-      return $this->error("タスクの終了失敗");
+     Log::debug("Error:".print_r($e->getMessage(),true)); 
     }
   }
 }
