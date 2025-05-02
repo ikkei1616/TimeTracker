@@ -79,4 +79,18 @@ class Controller_Api_Task extends Controller_Rest
       return $this->serverError("タスクの終了失敗");
     }
   }
+
+  public function get_tasks()
+  {
+    $current_user_id = Session::get("current_user_id");
+
+    try {
+      $tasks = DB::select("*")->from("tasks")->where("user_id", "=", $current_user_id)->execute()->as_array();
+
+      return $this->success($tasks, "タスクの取得成功", 200, false);
+    } catch (Exception $e) {
+      Log::debug("Error:".print_r($e->getMessage(),true));
+      return $this->serverError("タスクの取得失敗");
+    }
+  }
 }
