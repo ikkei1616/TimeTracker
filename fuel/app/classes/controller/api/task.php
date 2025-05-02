@@ -110,11 +110,43 @@ class Controller_Api_Task extends Controller_Rest
       } else {
         return $this->notFoundError("該当のタスクが存在しません");
       }
-      
-
     } catch (Exception $e) {
       Log::debug("Error:" . print_r($e->getMessage, true));
       return $this->error("タスクの終了失敗");
+    }
+  }
+
+  public function post_tasks($task_id = null)
+  {
+    if (!$task_id) {
+      return $this->error("IDが指定されていません");
+    }
+
+    $date = json_decode(file_get_contents("php://input"), true);
+
+    #リクエストボディにtaskプロパティが含まれているか確認
+    if (!isset($date["task"])) {
+      return $this->validationError("リクエストが不正です");
+    }
+
+    $task = $date["task"];
+
+    if ($task["title"] === "") {
+      return $this->error("タスクの名前を入力してください", 400);
+    }
+
+    $title = $task["title"];
+
+    try {
+      $result = DB::update("tasks")->set(["title"=>$title,])->where("id", "=", $task_id)->execute();
+      
+      if ($result === 0) {
+        return $this->notFoundError("該当するタスクが存在しません");
+      }
+      return $this->success(null, "タスクの編集成功", 200, false);
+    } catch (Exception $e) {
+      Log::debug("Error:" . print_r($e->getMessage(), true));
+      return $this->serverError("タスクの編集失敗");
     }
   }
 }
