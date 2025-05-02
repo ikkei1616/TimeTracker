@@ -93,6 +93,8 @@ class Controller_Api_Task extends Controller_Rest
       return $this->serverError("タスクの取得失敗");
     }
   }
+
+
   public function delete_tasks($task_id = null)
   {
     if (!$task_id) {
@@ -101,8 +103,15 @@ class Controller_Api_Task extends Controller_Rest
 
     try {
       $task = DB::select("*")->from("tasks")->where("id", "=", $task_id)->execute()->as_array();
-      DB::delete("tasks")->where("id", "=", $task_id)->execute();
-      return $this->success($task, "タスクの削除成功", 200, false);
+      $result = DB::delete("tasks")->where("id", "=", $task_id)->execute();
+
+      if ($result === 1) {
+        return $this->success($task, "タスクの削除成功", 200, false);
+      } else {
+        return $this->notFoundError("該当のタスクが存在しません");
+      }
+      
+
     } catch (Exception $e) {
       Log::debug("Error:" . print_r($e->getMessage, true));
       return $this->error("タスクの終了失敗");
