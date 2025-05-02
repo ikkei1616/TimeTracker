@@ -69,13 +69,13 @@ class Controller_Api_Task extends Controller_Rest
     $current_time = $current_time->format(DateTime::ATOM);
     Log::debug($current_time);
     $current_user_id = Session::get("current_user_id");
-    Log::debug("current_user_id".print_r($current_user_id,true));
+    Log::debug("current_user_id" . print_r($current_user_id, true));
 
     try {
       DB::update("tasks")->set(["end_time" => $current_time])->where("end_time", "IS", DB::expr('NULL'))->and_where("user_id", "=", $current_user_id)->execute();
       return $this->success(null, "タスクの終了成功", 200, false);
     } catch (Exception $e) {;
-     Log::debug("Error:".print_r($e->getMessage(),true)); 
+      Log::debug("Error:" . print_r($e->getMessage(), true));
       return $this->serverError("タスクの終了失敗");
     }
   }
@@ -89,8 +89,23 @@ class Controller_Api_Task extends Controller_Rest
 
       return $this->success($tasks, "タスクの取得成功", 200, false);
     } catch (Exception $e) {
-      Log::debug("Error:".print_r($e->getMessage(),true));
+      Log::debug("Error:" . print_r($e->getMessage(), true));
       return $this->serverError("タスクの取得失敗");
+    }
+  }
+  public function delete_tasks($task_id = null)
+  {
+    if (!$task_id) {
+      $this->error("IDが指定されていません", 400);
+    }
+
+    try {
+      $task = DB::select("*")->from("tasks")->where("id", "=", $task_id)->execute()->as_array();
+      DB::delete("tasks")->where("id", "=", $task_id)->execute();
+      return $this->success($task, "タスクの削除成功", 200, false);
+    } catch (Exception $e) {
+      Log::debug("Error:" . print_r($e->getMessage, true));
+      return $this->error("タスクの終了失敗");
     }
   }
 }
