@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import {startTask} from "./api/startTask";
+import {endTask} from "./api/endTask";
 
 const TimerArea = () => {
   const [time, setTime] = useState(null);
@@ -25,6 +26,7 @@ const TimerArea = () => {
       //タイマーストップ時の処理
       setTaskTitle(null);
       setTime(null);
+      endTask({setResponse});
 
     } else {
       //タイマー開始時の処理
