@@ -22,6 +22,7 @@ const TimerArea = () => {
     if (isRunning ){
       //タイマーストップ時の処理
       setTaskTitle(null);
+      setTime(null);
       
     } else {
       //タイマー開始時の処理
