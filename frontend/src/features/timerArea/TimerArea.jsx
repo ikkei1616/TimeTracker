@@ -5,7 +5,7 @@ import {endTask} from "./api/endTask";
 
 const TimerArea = () => {
   const [time, setTime] = useState(null);
-  const [taskTitle, setTaskTitle] = useState(null);
+  const [taskTitle, setTaskTitle] = useState("");
   const [isRunning, setIsRunning] = useState(false);
   const [timeDiff, setTimeDiff] = useState(null);
   const timerId = useRef(null);
