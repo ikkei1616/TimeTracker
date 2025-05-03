@@ -64,7 +64,7 @@ const TimerArea = () => {
       )}
 
       <div className="flex gap-4">
-        <div>{time}</div>
+        <div>{formatSecondsToTime(time)}</div>
         <button
           onClick={handleClick}
           className="border border-black border-solid"
