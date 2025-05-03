@@ -7,8 +7,21 @@ const TimerArea = () => {
   const [timeDiff, setTimeDiff] = useState(null);
   const timerId = useRef(null);
   return (
-    <div>TimerArea</div>
-  )
-}
+    <div className="flex gap-16">
+      {isRunning ? (
+        <p>{taskTitle}</p>
+      ) : (
+        <input
+          value={taskTitle}
+          type="text"
+          placeholder="タスク名を入力してください"
+          className="border border-black border-solid w-52"
+          onChange={(e) => setTaskTitle(e.target.value)}
+        />
+      )}
 
-export default TimerArea
+    </div>
+  );
+};
+
+export default TimerArea;
