@@ -7,6 +7,21 @@ const TimerArea = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [timeDiff, setTimeDiff] = useState(null);
   const timerId = useRef(null);
+
+  useEffect(() => {
+    if (isRunning) {
+      timerId.current = setInterval(() => {
+        setTime((prev) => prev + 1);
+      }, 1000);
+    }
+    return () => clearInterval(timerId.current);
+  }, [isRunning]);
+
+
+  const handleClick = () => {
+    setIsRunning((state) => !state)
+  }
+
   return (
     <div className="flex gap-16">
       {isRunning ? (
@@ -21,6 +36,16 @@ const TimerArea = () => {
         />
       )}
 
+      <div className="flex gap-4">
+        <div>{time}</div>
+        <button
+          onClick={handleClick}
+          className="border border-black border-solid"
+          disabled={!taskTitle}
+        >
+          {isRunning ? "終了ボタン" : "開始ボタン"}
+        </button>
+      </div>
     </div>
   );
 };
