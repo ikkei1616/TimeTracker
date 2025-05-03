@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
+import {startTask} from "./api/startTask";
 
 const TimerArea = () => {
   const [time, setTime] = useState(null);
@@ -7,6 +8,7 @@ const TimerArea = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [timeDiff, setTimeDiff] = useState(null);
   const timerId = useRef(null);
+  const [response,setResponse] = useState(null);
 
   useEffect(() => {
     if (isRunning) {
@@ -23,9 +25,10 @@ const TimerArea = () => {
       //タイマーストップ時の処理
       setTaskTitle(null);
       setTime(null);
-      
+
     } else {
       //タイマー開始時の処理
+      startTask({taskTitle,setResponse})
     }
 
     setIsRunning((state) => !state)
