@@ -37,7 +37,7 @@ const TimerArea = () => {
   const handleClick = () => {
     if (isRunning ){
       //タイマーストップ時の処理
-      setTaskTitle(null);
+      setTaskTitle("");
       setTime(null);
       endTask({setResponse});
 
