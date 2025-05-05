@@ -41,7 +41,8 @@ export const signIn = async (name,pass,setResponse) => {
     });
 
     const data = await res.json();
-    setResponse(data.result);
+    setResponse(data.status);
+    
   } catch (error) {
     console.error("Error",error);
     setResponse("Error occurred");
