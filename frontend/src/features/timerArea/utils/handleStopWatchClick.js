@@ -3,7 +3,7 @@ import {startTask} from "../api/startTask"
 import {endTask} from "../api/endTask";
 
 export  const handleStopWatchClick = ({isRunning,setIsRunning,setTaskTitle,setTime,setResponse,timerId,taskTitle,setTimeDiff,taskStartTime}) => {
-    console.log("クリックされました");
+    
     if (isRunning ){
       //タイマーストップ時の処理
       setTaskTitle("");
