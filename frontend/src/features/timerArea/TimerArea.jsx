@@ -10,44 +10,9 @@ const TimerArea = () => {
   const [timeDiff, setTimeDiff] = useState(null);
   const timerId = useRef(null);
   const [response,setResponse] = useState(null);
- 
-
-  //数字を"00:00"の形式に変化する関数
-  function formatSecondsToTime(seconds) {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    const paddedMins = String(mins).padStart(2, '0');
-    const paddedSecs = String(secs).padStart(2, '0');
-    return `${paddedMins}:${paddedSecs}`;
-  }
-
-  console.log(formatSecondsToTime(3600))
-  
-  
-  useEffect(() => {
-    if (isRunning) {
-      timerId.current = setInterval(() => {
-        setTime((prev) => prev + 1);
-      }, 1000);
-    }
-    return () => clearInterval(timerId.current);
-  }, [isRunning]);
-
-
-  const handleClick = () => {
-    if (isRunning ){
-      //タイマーストップ時の処理
-      setTaskTitle("");
-      setTime(null);
-      endTask({setResponse});
-
-    } else {
-      //タイマー開始時の処理
-      startTask({taskTitle,setResponse})
-    }
-
-    setIsRunning((state) => !state)
-  }
+  useEffect(()=>{
+    getCurrentTask({setIsRunning,setResponse,setTaskTitle,setTimeDiff,taskStartTime});
+  },[])
 
   return (
     <div className="flex gap-16">
