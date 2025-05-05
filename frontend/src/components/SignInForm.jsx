@@ -22,7 +22,7 @@ const SignInForm = () => {
   },[name,pass])
 
   useEffect(() => {
-    if (response === true) {
+    if (response == "success") {
       navigate("/timer");
     }
   }, [response]);
