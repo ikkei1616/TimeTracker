@@ -26,17 +26,20 @@ const TimerArea = () => {
 
 
   return (
-    <div className="w-screen h-28 max-w-7xl mx-auto flex justify-between items-center gap-16 px-8">
-      {isRunning ? <TaskTitle taskTitle={taskTitle} /> : <TaskInput taskTitle={taskTitle}  setTaskTitle={setTaskTitle} /> }
-      <div className="flex gap-4">
-        <StopWatch time={time} isRunning={isRunning} />
-        <StopWatchButton
-          taskTitle={taskTitle}
-          isRunning={isRunning}
-          clickHandler={()=>{handleStopWatchClick({isRunning,setIsRunning,setTaskTitle,setTime,setResponse,timerId,taskTitle,setTimeDiff,taskStartTime})}}
-        />  
+    <div className="w-screen border-b-2 border-black">
+      <div className="w-screen h-28 max-w-7xl mx-auto px-8 flex justify-between items-center ">
+        {isRunning ? <TaskTitle taskTitle={taskTitle} isRunning={isRunning} /> : <TaskInput taskTitle={taskTitle}  setTaskTitle={setTaskTitle} /> }
+        <div className="flex gap-12 items-center ">
+          <StopWatch time={time} isRunning={isRunning} />
+          <StopWatchButton
+            taskTitle={taskTitle}
+            isRunning={isRunning}
+            clickHandler={()=>{handleStopWatchClick({isRunning,setIsRunning,setTaskTitle,setTime,setResponse,timerId,taskTitle,setTimeDiff,taskStartTime})}}
+          />  
+        </div>
       </div>
     </div>
+   
   );
 };
 
