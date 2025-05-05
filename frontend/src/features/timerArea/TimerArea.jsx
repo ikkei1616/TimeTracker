@@ -2,8 +2,11 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import  useTimer  from "./hooks/useTimer";
 import { getCurrentTask } from "./api/getCurrentTask";
-import { formatSecondsToTime } from "./utils/formatSecondsToTIme";
 import { handleStopWatchClick } from "./utils/handleStopWatchClick";
+import TaskInput from "./components/taskInput";
+import StopWatchButton from "./components/StopWatchButton";
+import TaskTitle from "./components/taskTitle";
+import StopWatch from "./components/StopWatch";
 
 
 const TimerArea = () => {
@@ -23,30 +26,20 @@ const TimerArea = () => {
 
 
   return (
-    <div className="flex gap-16">
-      {isRunning ? (
-        <p>{taskTitle}</p>
-      ) : (
-        <input
-          value={taskTitle}
-          type="text"
-          placeholder="タスク名を入力してください"
-          className="border border-black border-solid w-52"
-          onChange={(e) => setTaskTitle(e.target.value)}
-        />
-      )}
-      
-      <div className="flex gap-4">
-        <div>{formatSecondsToTime(time)}</div>
-        <button
-          onClick={()=>{handleStopWatchClick({isRunning,setIsRunning,setTaskTitle,setTime,setResponse,timerId,taskTitle,setTimeDiff,taskStartTime})}}
-          className="border border-black border-solid"
-          disabled={!taskTitle}
-        >
-          {isRunning ? "終了ボタン" : "開始ボタン"}
-        </button>
+    <div className="w-screen border-b-2 border-black">
+      <div className="w-screen h-28 max-w-7xl mx-auto px-8 flex justify-between items-center ">
+        {isRunning ? <TaskTitle taskTitle={taskTitle} isRunning={isRunning} /> : <TaskInput taskTitle={taskTitle}  setTaskTitle={setTaskTitle} /> }
+        <div className="flex gap-12 items-center ">
+          <StopWatch time={time} isRunning={isRunning} />
+          <StopWatchButton
+            taskTitle={taskTitle}
+            isRunning={isRunning}
+            clickHandler={()=>{handleStopWatchClick({isRunning,setIsRunning,setTaskTitle,setTime,setResponse,timerId,taskTitle,setTimeDiff,taskStartTime})}}
+          />  
+        </div>
       </div>
     </div>
+   
   );
 };
 
