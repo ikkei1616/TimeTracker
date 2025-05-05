@@ -17,9 +17,9 @@ const SignUpForm = () => {
         if (name && email && pass) {
           setIsFilled(true);
         }
-      },
-      [name,email,pass]
-    )
+  if (response == "アカウント作成成功"){
+    navigate("/timer");
+  }
   
   return (
     <div className="flex flex-col text-center   w-111 p-12">
