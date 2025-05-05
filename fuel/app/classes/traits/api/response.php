@@ -48,7 +48,7 @@ trait Traits_Api_Response
   {
     $response = [
       'status' => 'error',
-      'error' => $errorMessage,
+      'message' => $errorMessage,
       'server_time' => time()
     ];
 
