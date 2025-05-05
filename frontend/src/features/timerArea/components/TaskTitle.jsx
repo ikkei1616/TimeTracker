@@ -1,9 +1,13 @@
 import React from 'react'
+import clsx from "clsx"
 
-const TaskTitle= ({taskTitle}) => {
+const TaskTitle= ({taskTitle,isRunning}) => {
   return (
     <div
-      className="pl-20 text-4xl text-center font-bold"
+      className={clsx(
+        "pl-20  text-center font-bold",
+        isRunning ? "text-5xl" : "text-4xl"
+      )}
     >{taskTitle}</div>
   )
 }
