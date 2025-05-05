@@ -1,53 +1,26 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import {startTask} from "./api/startTask";
-import {endTask} from "./api/endTask";
+import  useTimer  from "./hooks/useTimer";
+import { getCurrentTask } from "./api/getCurrentTask";
+import { formatSecondsToTime } from "./utils/formatSecondsToTIme";
+import { handleStopWatchClick } from "./utils/handleStopWatchClick";
+
 
 const TimerArea = () => {
   const [time, setTime] = useState(null);
   const [taskTitle, setTaskTitle] = useState("");
   const [isRunning, setIsRunning] = useState(false);
   const [timeDiff, setTimeDiff] = useState(null);
-  const timerId = useRef(null);
   const [response,setResponse] = useState(null);
- 
+  const timerId = useRef(null);
+  const taskStartTime = useRef(null);
 
-  //数字を"00:00"の形式に変化する関数
-  function formatSecondsToTime(seconds) {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    const paddedMins = String(mins).padStart(2, '0');
-    const paddedSecs = String(secs).padStart(2, '0');
-    return `${paddedMins}:${paddedSecs}`;
-  }
-
-  console.log(formatSecondsToTime(3600))
+  useEffect(()=>{
+    getCurrentTask({setIsRunning,setResponse,setTaskTitle,setTimeDiff,taskStartTime});
+  },[])
   
-  
-  useEffect(() => {
-    if (isRunning) {
-      timerId.current = setInterval(() => {
-        setTime((prev) => prev + 1);
-      }, 1000);
-    }
-    return () => clearInterval(timerId.current);
-  }, [isRunning]);
+  useTimer({timerId,taskStartTime,timeDiff,setTime,isRunning})
 
-
-  const handleClick = () => {
-    if (isRunning ){
-      //タイマーストップ時の処理
-      setTaskTitle("");
-      setTime(null);
-      endTask({setResponse});
-
-    } else {
-      //タイマー開始時の処理
-      startTask({taskTitle,setResponse})
-    }
-
-    setIsRunning((state) => !state)
-  }
 
   return (
     <div className="flex gap-16">
@@ -62,11 +35,11 @@ const TimerArea = () => {
           onChange={(e) => setTaskTitle(e.target.value)}
         />
       )}
-
+      
       <div className="flex gap-4">
         <div>{formatSecondsToTime(time)}</div>
         <button
-          onClick={handleClick}
+          onClick={()=>{handleStopWatchClick({isRunning,setIsRunning,setTaskTitle,setTime,setResponse,timerId,taskTitle,setTimeDiff,taskStartTime})}}
           className="border border-black border-solid"
           disabled={!taskTitle}
         >

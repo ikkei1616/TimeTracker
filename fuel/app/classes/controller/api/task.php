@@ -171,6 +171,11 @@ class Controller_Api_Task extends Controller_Rest
     try {
       $current_user_id = Session::get("current_user_id");
       $current_task = DB::select("*")->from("tasks")->where("user_id","=",$current_user_id)->and_where("end_time", "IS", DB::expr('NULL'))->execute()->as_array();
+
+      if ($current_task == []) {
+        return $this->serverError("進行中のタスクがありませんでした。");
+      }
+
       return $this->success($current_task,"進行中のタスクの取得成功",200,true);
     } catch (Exception $e) {
       Log::debug("Error".print_r($e->getMessage()));
