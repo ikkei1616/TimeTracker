@@ -11,7 +11,7 @@ const StopWatchButton = ({clickHandler,taskTitle,isRunning}) => {
       )}
       disabled={!taskTitle}
     >
-      {isRunning ? "▶" : "▶"}
+      {isRunning ?  "| |":"▶" }
     </button>
   )
 }
