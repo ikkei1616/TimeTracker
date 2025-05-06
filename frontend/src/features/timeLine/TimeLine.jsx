@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState,useEffect } from 'react';
+import Task from "./components/Task";
 
 const TimeLine = () => {
   const [tasks,setTasks ] = useState([]);
@@ -58,6 +59,8 @@ const TimeLine = () => {
     getTasks();
   },[])
 
+
+
   return (
     <div className="w-9/12 ">
       <h2 className="text-left border-2">Task Time Line</h2>
@@ -78,8 +81,7 @@ const TimeLine = () => {
               </div>
               {tasks.map((task)=>{
                 console.log("タスクmap関数",task)
-                return (<div style={{ position:"absolute", top:`${task.topLength * 60}px`, backgroundColor:"blue",color:"white",height:`${task.height * 60}px` ,width:"90%" ,marginLeft:"5%" }}>{task.title}</div>)
-
+                return <Task task={task} />
               })}
           </div>
         </div>
