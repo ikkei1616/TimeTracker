@@ -5,13 +5,13 @@ import clsx from "clsx";
 
 const StopWatch = ({time,isRunning}) => {
   return (
-    <dvi className={clsx(
+    <div className={clsx(
         " font-bold ",
         isRunning ? "text-4xl text-color-ccc": " text-3xl text-gray-400"
       )}
     >
       {formatSecondsToTime(time)}
-    </dvi>
+    </div>
   )
 }
 
