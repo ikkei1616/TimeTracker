@@ -4,7 +4,7 @@ import Task from "./components/Task";
 
 const TimeLine = () => {
   const [tasks,setTasks ] = useState([]);
-
+  
   useEffect(()=>{
     const getTasks = async () => {
       try {
@@ -70,7 +70,6 @@ const TimeLine = () => {
           <div className='relative w-2/12 border-2 border-rose-300 h-[1440px]'>
             {Array.from({length:23}).map((_, i) => {
               return <p key={i} style={{ position:"absolute",top: `${(i+1) * 60 -10}px`,right:20}} >{i+1}:00</p>
-              
             })}
           </div>
           <div className='relative grid  grid-rows-24  w-10/12 bg-white '>
@@ -81,7 +80,7 @@ const TimeLine = () => {
               </div>
               {tasks.map((task)=>{
                 console.log("タスクmap関数",task)
-                return <Task task={task} />
+                return <Task task={task} setTasks={setTasks}/>
               })}
           </div>
         </div>

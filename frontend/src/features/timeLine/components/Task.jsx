@@ -2,7 +2,7 @@ import React from 'react';
 import {useState} from "react";
 import Modal from "./Modal";
 
-const Task = ({task}) => {
+const Task = ({task,setTasks}) => {
   const [isModalOpen,setIsModalOpen] = useState(false);
 
   return (
@@ -15,7 +15,7 @@ const Task = ({task}) => {
         {task.title}
       </div>
       { isModalOpen && 
-        <Modal task={task} setIsModalOpen={setIsModalOpen} />
+        <Modal task={task} setIsModalOpen={setIsModalOpen} setTasks={setTasks} />
       }
     </>
   )
