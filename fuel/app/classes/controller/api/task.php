@@ -111,8 +111,8 @@ class Controller_Api_Task extends Controller_Rest
         return $this->notFoundError("該当のタスクが存在しません");
       }
     } catch (Exception $e) {
-      Log::debug("Error:" . print_r($e->getMessage, true));
-      return $this->error("タスクの終了失敗");
+      Log::debug("Error:" . print_r($e->getMessage(), true));
+      return $this->error("タスクの削除失敗");
     }
   }
 
