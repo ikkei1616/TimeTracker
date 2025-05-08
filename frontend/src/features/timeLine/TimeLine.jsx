@@ -27,12 +27,12 @@ const TimeLine = () => {
           
           const addedTasks = data.tasks.map((task)=> {
 
-            const taskStartTime = task.start_time;
+            const taskStartTime = new Date(task.start_time);
             let taskEndTime;
             if (!data.end_time) {
               taskEndTime = new Date();
             }
-            taskEndTime = task.end_time;
+            taskEndTime = new Date(task.end_time);
             
 
             //タスクの表示位置計算のロジック
@@ -41,12 +41,12 @@ const TimeLine = () => {
             timeStandard.setMinutes(0);
             timeStandard.setSeconds(0);
             timeStandard.setMilliseconds(0);
-            const durationMs =(new Date(taskStartTime) - timeStandard)
+            const durationMs = taskStartTime - timeStandard;
             const durationHour = ( durationMs / 3600000);
-            task.topLength = (durationHour + 9 );
+            task.topLength = durationHour
 
             //タスクの長さ計算のロジック
-            const elapsedMs = new Date(taskEndTime) - new Date(taskStartTime);
+            const elapsedMs = taskEndTime - taskStartTime;
             const elapsedHour = elapsedMs / 3600000;
             task.height = elapsedHour;
 
