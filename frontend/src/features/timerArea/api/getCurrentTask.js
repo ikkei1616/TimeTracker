@@ -22,6 +22,8 @@ export const getCurrentTask = async () => {
         clientClockOffset: clientTime - new Date(data.server_time),
         taskStartTime: startTime,
       };
+    }else{
+      throw new Error("Failed to fetch current task");
     }
   } catch (error) {
     console.log("Error:", error);
