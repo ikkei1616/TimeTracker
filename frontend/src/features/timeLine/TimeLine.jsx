@@ -6,6 +6,7 @@ const TimeLine = () => {
   const [tasks,setTasks ] = useState([]);
   const [displayTask,setDisplayTask] = useState([]);
   
+  
   useEffect(()=>{
     const getTasks = async () => {
       try {
@@ -28,6 +29,7 @@ const TimeLine = () => {
               taskEndTime = new Date();
             }
             taskEndTime = task.end_time;
+            
 
             //タスクの表示位置計算のロジック
             const timeStandard = new Date();
@@ -42,16 +44,24 @@ const TimeLine = () => {
             //タスクの長さ計算のロジック
             const elapsedMs = new Date(taskEndTime) - new Date(taskStartTime);
             const elapsedHour = elapsedMs / 3600000;
-            console.log("タスク開示時間",taskStartTime);
-            console.log("タスク終了時間",taskEndTime)
-            console.log("タスク所要時間",elapsedHour);
             task.height = elapsedHour;
 
             return task
           })
-
-          
           setTasks(addedTasks);
+
+
+          //タスクの開始日が今日かどうかフィルター
+          const todayAddedTask = addedTasks.filter((task)=>{
+            const today = new Date();
+            console.log(today); // JST
+            const taskStartTime = new Date(task.start_time); //utf
+            taskStartTime.setHours(taskStartTime.getHours() + 9); //utf → jst
+            if (today.getDate() === taskStartTime.getDate()) {
+              return task
+            }
+          });
+          setDisplayTask(todayAddedTask)
         }
         
       } catch (error) {
@@ -80,9 +90,9 @@ const TimeLine = () => {
                   return (<div key={i} className="h-[60px] border border-black">{i}</div>)
                 })}
               </div>
-              {tasks.map((task)=>{
+              {displayTask.map((task)=>{
                 console.log("タスクmap関数",task)
-                return <Task task={task} setTasks={setTasks}/>
+                return <Task key={task.id} task={task} setTasks={setTasks}/>
               })}
           </div>
         </div>
