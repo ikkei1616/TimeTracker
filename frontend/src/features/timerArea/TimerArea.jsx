@@ -10,7 +10,6 @@ import StopWatch from "./components/StopWatch";
 
 
 const TimerArea = () => {
-  const [time, setTime] = useState(null);
   const [taskTitle, setTaskTitle] = useState("");
   const [isRunning, setIsRunning] = useState(false);
   const [timeDiff, setTimeDiff] = useState(null);
@@ -29,7 +28,7 @@ const TimerArea = () => {
     )
   },[])
   
-  const {intervalId} = useTimer({taskStartTime,timeDiff,setTime,isRunning})
+  const {intervalId, taskElapsedSeconds, stopTimer} = useTimer({taskStartTime: taskStartTime.current, timeDiff,isRunning})
 
 
   return (
@@ -37,11 +36,11 @@ const TimerArea = () => {
       <div className="w-screen h-28 max-w-7xl mx-auto px-8 flex justify-between items-center ">
         {isRunning ? <TaskTitle taskTitle={taskTitle} isRunning={isRunning} /> : <TaskInput taskTitle={taskTitle}  setTaskTitle={setTaskTitle} /> }
         <div className="flex gap-12 items-center ">
-          <StopWatch time={time} isRunning={isRunning} />
+          <StopWatch time={taskElapsedSeconds} isRunning={isRunning} />
           <StopWatchButton
             taskTitle={taskTitle}
             isRunning={isRunning}
-            clickHandler={()=>{handleStopWatchClick({isRunning,setIsRunning,setTaskTitle,setTime,setResponse,intervalId,taskTitle,setTimeDiff,taskStartTime})}}
+            clickHandler={()=>{handleStopWatchClick({isRunning,setIsRunning,setTaskTitle,setResponse,taskTitle,setTimeDiff,taskStartTime, stopTimer})}}
           />  
         </div>
       </div>

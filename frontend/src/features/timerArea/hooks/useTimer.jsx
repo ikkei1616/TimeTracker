@@ -1,15 +1,21 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {useEffect} from "react";
 
 
-const useTimer = ({taskStartTime,timeDiff,setTime,isRunning}) => {
+const useTimer = ({taskStartTime,timeDiff,isRunning}) => {
   const intervalId = useRef(null);
+  const [taskElapsedSeconds, setTime] = useState(null);
+
+  const stopTimer = useCallback(()=> {
+    setTime(null);
+    clearInterval(intervalId.current);
+  },[])
 
     useEffect(() => {
       if (isRunning) {
         intervalId.current = setInterval(()=>{
-          console.log("duration",new Date() - taskStartTime.current + timeDiff)
-          const duration = Math.floor((new Date() - taskStartTime.current + timeDiff)/1000)
+          console.log("duration",new Date() - taskStartTime + timeDiff)
+          const duration = Math.floor((new Date() - taskStartTime + timeDiff)/1000)
           setTime(duration);
         }, 1000)
       }
@@ -17,7 +23,9 @@ const useTimer = ({taskStartTime,timeDiff,setTime,isRunning}) => {
     }, [isRunning]);
   
   return {
-    intervalId
+    intervalId,
+    taskElapsedSeconds,
+    stopTimer
   }
 }
 
