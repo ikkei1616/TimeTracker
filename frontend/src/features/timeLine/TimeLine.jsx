@@ -5,8 +5,12 @@ import Task from "./components/Task";
 const TimeLine = () => {
   const [tasks,setTasks ] = useState([]);
   const [displayTask,setDisplayTask] = useState([]);
-  
-  
+  const today = new Date();
+  const thisMonth = today.getMonth() +1;
+  const thisDate = today.getDate();
+  const thisDay = today.getDay();
+  const days =["SUN","MON","TUE","WED","THU","FRI","SAT"];
+
   useEffect(()=>{
     const getTasks = async () => {
       try {
@@ -53,8 +57,6 @@ const TimeLine = () => {
 
           //タスクの開始日が今日かどうかフィルター
           const todayAddedTask = addedTasks.filter((task)=>{
-            const today = new Date();
-            console.log(today); // JST
             const taskStartTime = new Date(task.start_time); //utf
             taskStartTime.setHours(taskStartTime.getHours() + 9); //utf → jst
             if (today.getDate() === taskStartTime.getDate()) {
@@ -77,7 +79,9 @@ const TimeLine = () => {
     <div className="w-9/12 ">
       <h2 className="text-left border-2">Task Time Line</h2>
       <div>
-        <div className="text-center border-2">4/1 Monday</div>
+        <div className="text-center border-2">
+          <p>{thisMonth+"/"+thisDate}<span>{days[thisDay]}</span></p>
+        </div>
         <div className="h-[1200px]  flex justify-between mb-60 ">
           <div className='relative w-2/12 border-2 border-rose-300 h-[1440px]'>
             {Array.from({length:23}).map((_, i) => {
