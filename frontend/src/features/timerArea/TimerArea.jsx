@@ -7,8 +7,8 @@ import TaskTitle from "./components/taskTitle";
 import StopWatch from "./components/StopWatch";
 
 import { getCurrentTask } from "./api/getCurrentTask";
-import { startTask } from "../api/startTask";
-import { endTask } from "../api/endTask";
+import { startTask } from "./api/startTask";
+import { endTask } from "./api/endTask";
 
 const TimerArea = () => {
   const [taskTitle, setTaskTitle] = useState("");
@@ -32,26 +32,17 @@ const TimerArea = () => {
     clientClockOffset,
   });
 
-  useEffect(()=>{
-    if (isRunning) startTimer()
-  },[isRunning, startTimer])
+  useEffect(() => {
+    if (isRunning) startTimer();
+  }, [isRunning, startTimer]);
 
-  const handleStopWatchClick = useCallback(()=>({
-    isRunning,
-    setIsRunning,
-    setTaskTitle,
-    setResponse,
-    taskTitle,
-    setClientClockOffset,
-    taskStartTime,
-    stopTimer,
-  }) => {
+  const handleStopWatchClick = useCallback(() => {
     if (isRunning) {
       //タイマーストップ時の処理
       setTaskTitle("");
       endTask({ setResponse });
       setIsRunning((state) => !state);
-  
+
       // useTimerフックのリセット処理
       stopTimer();
     } else {
@@ -62,7 +53,7 @@ const TimerArea = () => {
         const clientTime = new Date();
         console.log("clientTime", clientTime);
         console.log("clientClockOffset", clientTime - new Date(serverTime));
-  
+
         setResponse(responseMessage);
         setTaskTitle(receivedTaskTitle);
         setClientClockOffset(clientTime - new Date(serverTime));
@@ -71,7 +62,7 @@ const TimerArea = () => {
       };
       startTaskHandler();
     }
-  },[])
+  }, [isRunning, stopTimer, taskTitle]);
 
   return (
     <div className="w-screen border-b-2 border-black">
@@ -86,18 +77,7 @@ const TimerArea = () => {
           <StopWatchButton
             taskTitle={taskTitle}
             isRunning={isRunning}
-            clickHandler={() => {
-              handleStopWatchClick({
-                isRunning,
-                setIsRunning,
-                setTaskTitle,
-                setResponse,
-                taskTitle,
-                setClientClockOffset,
-                taskStartTime,
-                stopTimer,
-              });
-            }}
+            clickHandler={handleStopWatchClick}
           />
         </div>
       </div>
