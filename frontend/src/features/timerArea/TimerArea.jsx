@@ -17,7 +17,7 @@ const TimerArea = () => {
   const taskStartTime = useRef(null);
 
   useEffect(()=>{
-    getCurrentTask({taskStartTime}).then(
+    getCurrentTask().then(
       (result)=>{
         setResponse(result.response);
         setTaskTitle(result.taskTitle);
@@ -28,7 +28,7 @@ const TimerArea = () => {
     )
   },[])
   
-  const {intervalId, taskElapsedSeconds, stopTimer} = useTimer({taskStartTime: taskStartTime.current, timeDiff,isRunning})
+  const {taskElapsedSeconds, stopTimer} = useTimer({taskStartTime: taskStartTime.current, timeDiff,isRunning})
 
 
   return (

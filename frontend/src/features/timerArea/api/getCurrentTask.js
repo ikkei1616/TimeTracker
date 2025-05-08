@@ -1,4 +1,4 @@
-export const getCurrentTask = async ({taskStartTime}) => {
+export const getCurrentTask = async () => {
   try {
     const res = await fetch("http://localhost/api/task/current_task",{
       method:"GET",
