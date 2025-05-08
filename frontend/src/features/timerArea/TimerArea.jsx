@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useState, useEffect, useRef } from "react";
 import useTimer from "./hooks/useTimer";
-import { getCurrentTask } from "./api/getCurrentTask";
-import { handleStopWatchClick } from "./utils/handleStopWatchClick";
 import TaskInput from "./components/taskInput";
 import StopWatchButton from "./components/StopWatchButton";
 import TaskTitle from "./components/taskTitle";
 import StopWatch from "./components/StopWatch";
+
+import { getCurrentTask } from "./api/getCurrentTask";
+import { startTask } from "../api/startTask";
+import { endTask } from "../api/endTask";
 
 const TimerArea = () => {
   const [taskTitle, setTaskTitle] = useState("");
@@ -33,6 +35,43 @@ const TimerArea = () => {
   useEffect(()=>{
     if (isRunning) startTimer()
   },[isRunning, startTimer])
+
+  const handleStopWatchClick = useCallback(()=>({
+    isRunning,
+    setIsRunning,
+    setTaskTitle,
+    setResponse,
+    taskTitle,
+    setClientClockOffset,
+    taskStartTime,
+    stopTimer,
+  }) => {
+    if (isRunning) {
+      //タイマーストップ時の処理
+      setTaskTitle("");
+      endTask({ setResponse });
+      setIsRunning((state) => !state);
+  
+      // useTimerフックのリセット処理
+      stopTimer();
+    } else {
+      //タイマー開始時の処理
+      const startTaskHandler = async () => {
+        const { responseMessage, receivedTaskTitle, serverTime } =
+          await startTask({ taskTitle, setResponse });
+        const clientTime = new Date();
+        console.log("clientTime", clientTime);
+        console.log("clientClockOffset", clientTime - new Date(serverTime));
+  
+        setResponse(responseMessage);
+        setTaskTitle(receivedTaskTitle);
+        setClientClockOffset(clientTime - new Date(serverTime));
+        taskStartTime.current = new Date(serverTime);
+        setIsRunning((prev) => !prev);
+      };
+      startTaskHandler();
+    }
+  },[])
 
   return (
     <div className="w-screen border-b-2 border-black">
