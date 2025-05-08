@@ -49,7 +49,7 @@ trait Traits_Api_Response
     $response = [
       'status' => 'error',
       'message' => $errorMessage,
-      'server_time' => new DateTime('now', new DateTimeZone('UTC'))->format(DateTime::ATOM),
+      'server_time' => (new DateTime('now', new DateTimeZone('UTC')))->format(DateTime::ATOM),
     ];
 
     return $this->response($response, $code);
