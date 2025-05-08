@@ -14,7 +14,6 @@ export const getCurrentTask = async () => {
       const receivedTaskTitle = data.tasks[0].title;
       //utc→jst時刻に変換
       const startTime = new Date(data.tasks[0].start_time);
-      startTime.setHours(startTime.getHours() + 9);
 
       return {
         isRunning: true,
