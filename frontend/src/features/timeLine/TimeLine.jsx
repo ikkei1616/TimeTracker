@@ -4,6 +4,7 @@ import Task from "./components/Task";
 
 const TimeLine = () => {
   const [tasks,setTasks ] = useState([]);
+  const [displayTask,setDisplayTask] = useState([]);
   
   useEffect(()=>{
     const getTasks = async () => {
