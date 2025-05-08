@@ -20,7 +20,7 @@ export const getCurrentTask = async () => {
         isRunning: true,
         response: responseMessage,
         taskTitle: receivedTaskTitle,
-        timeDiff: clientTime - new Date(data.server_time),
+        clientClockOffset: clientTime - new Date(data.server_time),
         taskStartTime: startTime,
       };
     }
@@ -30,7 +30,7 @@ export const getCurrentTask = async () => {
       isRunning: false,
       response: error,
       taskTitle: "",
-      timeDiff: null,
+      clientClockOffset: null,
       taskStartTime: null,
     };
   }

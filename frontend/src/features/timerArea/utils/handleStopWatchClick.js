@@ -7,7 +7,7 @@ export const handleStopWatchClick = ({
   setTaskTitle,
   setResponse,
   taskTitle,
-  setTimeDiff,
+  setClientClockOffset,
   taskStartTime,
   stopTimer,
 }) => {
@@ -26,11 +26,11 @@ export const handleStopWatchClick = ({
         await startTask({ taskTitle, setResponse });
       const clientTime = new Date();
       console.log("clientTime", clientTime);
-      console.log("timeDiff", clientTime - new Date(serverTime));
+      console.log("clientClockOffset", clientTime - new Date(serverTime));
 
       setResponse(responseMessage);
       setTaskTitle(receivedTaskTitle);
-      setTimeDiff(clientTime - new Date(serverTime));
+      setClientClockOffset(clientTime - new Date(serverTime));
       taskStartTime.current = new Date(serverTime);
       setIsRunning((prev) => !prev);
     };

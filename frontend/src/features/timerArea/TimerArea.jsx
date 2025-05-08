@@ -11,7 +11,7 @@ import StopWatch from "./components/StopWatch";
 const TimerArea = () => {
   const [taskTitle, setTaskTitle] = useState("");
   const [isRunning, setIsRunning] = useState(false);
-  const [timeDiff, setTimeDiff] = useState(null);
+  const [clientClockOffset, setClientClockOffset] = useState(null);
   const [response, setResponse] = useState(null);
   const taskStartTime = useRef(null);
 
@@ -19,17 +19,20 @@ const TimerArea = () => {
     getCurrentTask().then((result) => {
       setResponse(result.response);
       setTaskTitle(result.taskTitle);
-      setTimeDiff(result.timeDiff);
+      setClientClockOffset(result.clientClockOffset);
       setIsRunning(result.isRunning);
       taskStartTime.current = result.taskStartTime;
     });
   }, []);
 
-  const { taskElapsedSeconds, stopTimer } = useTimer({
+  const { taskElapsedSeconds, stopTimer, startTimer } = useTimer({
     taskStartTime: taskStartTime.current,
-    timeDiff,
-    isRunning,
+    clientClockOffset,
   });
+
+  useEffect(()=>{
+    if (isRunning) startTimer()
+  },[isRunning, startTimer])
 
   return (
     <div className="w-screen border-b-2 border-black">
@@ -51,7 +54,7 @@ const TimerArea = () => {
                 setTaskTitle,
                 setResponse,
                 taskTitle,
-                setTimeDiff,
+                setClientClockOffset,
                 taskStartTime,
                 stopTimer,
               });
