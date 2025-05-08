@@ -34,15 +34,15 @@ class Controller_Api_Task extends Controller_Rest
 
     $title = $data["title"];
     $user_id = Session::get("current_user_id");
-    $start_time = new DateTime();
-    $start_time = $start_time->format(DateTime::ATOM);
+    $start_time = new DateTime('now', new DateTimeZone('UTC'));
+    $start_time_string = $start_time->format(DateTime::ATOM);
 
     try {
 
       $response_data = array(
         "title" => $title,
         "user_id" => $user_id,
-        "start_time" => $start_time,
+        "start_time" => $start_time_string,
         "end_time" => null,
       );
 
@@ -50,7 +50,7 @@ class Controller_Api_Task extends Controller_Rest
         array(
           "title" => $title,
           "user_id" => $user_id,
-          "start_time" => $start_time,
+          "start_time" => $start_time_string,
         )
       )->execute();
 
@@ -65,14 +65,14 @@ class Controller_Api_Task extends Controller_Rest
 
   public function post_end()
   {
-    $current_time = new DateTime;
-    $current_time = $current_time->format(DateTime::ATOM);
-    Log::debug($current_time);
+    $current_time = new DateTime('now', new DateTimeZone('UTC'));
+    $current_time_string = $current_time->format(DateTime::ATOM);
+    Log::debug($current_time_string);
     $current_user_id = Session::get("current_user_id");
     Log::debug("current_user_id" . print_r($current_user_id, true));
 
     try {
-      DB::update("tasks")->set(["end_time" => $current_time])->where("end_time", "IS", DB::expr('NULL'))->and_where("user_id", "=", $current_user_id)->execute();
+      DB::update("tasks")->set(["end_time" => $current_time_string])->where("end_time", "IS", DB::expr('NULL'))->and_where("user_id", "=", $current_user_id)->execute();
       return $this->success(null, "タスクの終了成功", 200, false);
     } catch (Exception $e) {;
       Log::debug("Error:" . print_r($e->getMessage(), true));
