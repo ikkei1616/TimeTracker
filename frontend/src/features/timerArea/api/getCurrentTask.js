@@ -14,16 +14,15 @@ export const getCurrentTask = async ({taskStartTime}) => {
       const responseMessage = data.message;
       const receivedTaskTitle = data.tasks[0].title; 
       //utc→jst時刻に変換
-      const serverTimeDate = new Date( data.tasks[0].start_time);
-      serverTimeDate.setHours(serverTimeDate.getHours() + 9);
+      const startTime = new Date( data.tasks[0].start_time);
+      startTime.setHours(startTime.getHours() + 9);
       
-      taskStartTime.current = serverTimeDate
-
       return {
         isRunning: true,
         response: responseMessage,
         taskTitle: receivedTaskTitle,
         timeDiff: clientTime - new Date(data.server_time),
+        taskStartTime: startTime
       }
     }
 
@@ -34,6 +33,7 @@ export const getCurrentTask = async ({taskStartTime}) => {
       response: error,
       taskTitle: "",
       timeDiff: null,
+      taskStartTime: null
     }
   }
 }

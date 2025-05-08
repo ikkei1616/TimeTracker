@@ -24,6 +24,7 @@ const TimerArea = () => {
         setTaskTitle(result.taskTitle);
         setTimeDiff(result.timeDiff);
         setIsRunning(result.isRunning);
+        taskStartTime.current = result.taskStartTime
       }
     )
   },[])
