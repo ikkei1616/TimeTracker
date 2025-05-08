@@ -22,10 +22,11 @@ const TimeLine = () => {
           const addedTasks = data.tasks.map((task)=> {
 
             const taskStartTime = task.start_time;
+            let taskEndTime;
             if (!data.end_time) {
-              let taskEndTime = new Date();
+              taskEndTime = new Date();
             }
-            let taskEndTime = task.end_time;
+            taskEndTime = task.end_time;
 
             //タスクの表示位置計算のロジック
             const timeStandard = new Date();
