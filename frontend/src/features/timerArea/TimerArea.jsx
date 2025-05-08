@@ -15,7 +15,6 @@ const TimerArea = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [timeDiff, setTimeDiff] = useState(null);
   const [response,setResponse] = useState(null);
-  const timerId = useRef(null);
   const taskStartTime = useRef(null);
 
   useEffect(()=>{
@@ -29,7 +28,7 @@ const TimerArea = () => {
     )
   },[])
   
-  useTimer({timerId,taskStartTime,timeDiff,setTime,isRunning})
+  const {intervalId} = useTimer({taskStartTime,timeDiff,setTime,isRunning})
 
 
   return (
@@ -41,7 +40,7 @@ const TimerArea = () => {
           <StopWatchButton
             taskTitle={taskTitle}
             isRunning={isRunning}
-            clickHandler={()=>{handleStopWatchClick({isRunning,setIsRunning,setTaskTitle,setTime,setResponse,timerId,taskTitle,setTimeDiff,taskStartTime})}}
+            clickHandler={()=>{handleStopWatchClick({isRunning,setIsRunning,setTaskTitle,setTime,setResponse,intervalId,taskTitle,setTimeDiff,taskStartTime})}}
           />  
         </div>
       </div>
