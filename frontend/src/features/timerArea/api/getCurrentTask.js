@@ -1,4 +1,4 @@
-export const getCurrentTask = async ({setIsRunning,setResponse,setTaskTitle,setTimeDiff,taskStartTime}) => {
+export const getCurrentTask = async ({taskStartTime}) => {
   try {
     const res = await fetch("http://localhost/api/task/current_task",{
       method:"GET",
@@ -10,7 +10,6 @@ export const getCurrentTask = async ({setIsRunning,setResponse,setTaskTitle,setT
     const data = await res.json();
     console.log(data)
     if (res.ok ) { 
-      setIsRunning(true);
 
       const responseMessage = data.message;
       const receivedTaskTitle = data.tasks[0].title; 
@@ -18,14 +17,23 @@ export const getCurrentTask = async ({setIsRunning,setResponse,setTaskTitle,setT
       const serverTimeDate = new Date( data.tasks[0].start_time);
       serverTimeDate.setHours(serverTimeDate.getHours() + 9);
       
-      setResponse(responseMessage);
-      setTaskTitle(receivedTaskTitle);
-      setTimeDiff(clientTime - new Date(data.server_time));
       taskStartTime.current = serverTimeDate
+
+      return {
+        isRunning: true,
+        response: responseMessage,
+        taskTitle: receivedTaskTitle,
+        timeDiff: clientTime - new Date(data.server_time),
+      }
     }
 
   } catch (error) {
     console.log("Error:",error);
-    setResponse("現在のタスク取得失敗")
+    return {
+      isRunning: false,
+      response: error,
+      taskTitle: "",
+      timeDiff: null,
+    }
   }
 }

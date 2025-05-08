@@ -19,7 +19,14 @@ const TimerArea = () => {
   const taskStartTime = useRef(null);
 
   useEffect(()=>{
-    getCurrentTask({setIsRunning,setResponse,setTaskTitle,setTimeDiff,taskStartTime});
+    getCurrentTask({taskStartTime}).then(
+      (result)=>{
+        setResponse(result.response);
+        setTaskTitle(result.taskTitle);
+        setTimeDiff(result.timeDiff);
+        setIsRunning(result.isRunning);
+      }
+    )
   },[])
   
   useTimer({timerId,taskStartTime,timeDiff,setTime,isRunning})
@@ -39,7 +46,6 @@ const TimerArea = () => {
         </div>
       </div>
     </div>
-   
   );
 };
 
