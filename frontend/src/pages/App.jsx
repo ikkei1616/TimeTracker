@@ -1,5 +1,5 @@
 import Header from "../components/Header";
-import {useState,useEffect} from "react";
+import {useState,useLayoutEffect} from "react";
 import {signInCheck} from "../features/auth/api";
 import SignIn from "./signIn";
 import SignUp from "./SignUp"
@@ -7,8 +7,12 @@ import SignUp from "./SignUp"
 function App() {
   const [isSignIn, setIsSignIn] =useState(null);
 
-  useEffect(()=>{
-    signInCheck({setIsSignIn})
+  useLayoutEffect(()=>{
+    const checkSignInStatus = async () => {
+      const isSignInResult =  await signInCheck();
+      setIsSignIn(isSignInResult);
+    };
+    checkSignInStatus();
   },[])
   return (
     <>

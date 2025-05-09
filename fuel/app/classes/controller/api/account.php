@@ -98,6 +98,11 @@ class Controller_Api_Account extends Controller_Rest
 
         try {
             Auth::create_user($name, $password, $email, 1);
+            $isLogin = Auth::login($name,$password);
+            $id_info_array = Auth::get_user_id();
+            $current_user_id = $id_info_array[1];
+            Session::set("current_user_id",$current_user_id);
+            Session::set("is_signed_in",true);
             return $this->success(null, "アカウント作成成功", 201, false);
         } catch (Exception $e) {
             // エラーハンドリング
@@ -109,7 +114,7 @@ class Controller_Api_Account extends Controller_Rest
     public function action_checkSignIn()
     {
         $is_signed_in = Session::get('is_signed_in');
-        $response = array("result" => $is_signed_in);
+        $response = array("is_signed_in" => $is_signed_in);
         return $this->response($response);
     }
 }

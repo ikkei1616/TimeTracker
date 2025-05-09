@@ -50,13 +50,13 @@ export const signIn = async (name,pass,setResponse) => {
 };
 
 
-export const signInCheck = async ({setIsSignIn})=>{
+export const signInCheck = async ()=>{
   const res = await fetch("http://localhost/api/account/checkSignIn",{ 
     method:"GET",
     credentials: "include",});
-  const data =await  res.json();
-  setIsSignIn(data.result);
+  const data =await res.json();
   
+  return data.is_signed_in
 
 }
 
