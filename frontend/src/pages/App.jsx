@@ -7,8 +7,7 @@ import SignUp from "./SignUp"
 function App() {
   const [isSignIn, setIsSignIn] =useState(null);
 
-  useEffect(()=>{
-    signInCheck({setIsSignIn})
+  useLayoutEffect(()=>{
   },[])
   return (
     <>
