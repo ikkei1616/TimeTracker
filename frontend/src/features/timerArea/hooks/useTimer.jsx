@@ -10,10 +10,11 @@ import { useEffect } from "react";
  */
 const useTimer = ({ taskStartTime, clientClockOffset }) => {
   const intervalId = useRef(null);
-  const [taskElapsedSeconds, setTime] = useState(null);
+  const [taskElapsedSeconds, setTaskElapsedSeconds] = useState(null);
 
   const stopTimer = useCallback(() => {
-    setTime(null);
+    console.log("stopTimer")
+    setTaskElapsedSeconds(null);
     clearInterval(intervalId.current);
   }, []);
 
@@ -23,7 +24,7 @@ const useTimer = ({ taskStartTime, clientClockOffset }) => {
       const duration = Math.floor(
         (new Date() - taskStartTime + clientClockOffset) / 1000
       );
-      setTime(duration);
+      setTaskElapsedSeconds(duration);
     }, 1000);
   }, [taskStartTime, clientClockOffset]) 
 
