@@ -1,31 +1,38 @@
-export const getCurrentTask = async ({setIsRunning,setResponse,setTaskTitle,setTimeDiff,taskStartTime}) => {
+export const getCurrentTask = async () => {
   try {
-    const res = await fetch("http://localhost/api/task/current_task",{
-      method:"GET",
-      credentials:"include",
+    const res = await fetch("http://localhost/api/task/current_task", {
+      method: "GET",
+      credentials: "include",
     });
-    const clientTime = new Date(); 
-    console.log("res.ok",res.ok)
+    const clientTime = new Date();
+    console.log("res.ok", res.ok);
 
     const data = await res.json();
-    console.log(data)
-    if (res.ok ) { 
-      setIsRunning(true);
-
+    console.log(data);
+    if (res.ok) {
       const responseMessage = data.message;
-      const receivedTaskTitle = data.tasks[0].title; 
+      const receivedTaskTitle = data.tasks[0].title;
       //utc→jst時刻に変換
-      const serverTimeDate = new Date( data.tasks[0].start_time);
-      serverTimeDate.setHours(serverTimeDate.getHours() + 9);
-      
-      setResponse(responseMessage);
-      setTaskTitle(receivedTaskTitle);
-      setTimeDiff(clientTime - new Date(data.server_time));
-      taskStartTime.current = serverTimeDate
-    }
+      const startTime = new Date(data.tasks[0].start_time);
 
+      return {
+        isRunning: true,
+        response: responseMessage,
+        taskTitle: receivedTaskTitle,
+        clientClockOffset: clientTime - new Date(data.server_time),
+        taskStartTime: startTime,
+      };
+    }else{
+      throw new Error("Failed to fetch current task");
+    }
   } catch (error) {
-    console.log("Error:",error);
-    setResponse("現在のタスク取得失敗")
+    console.log("Error:", error);
+    return {
+      isRunning: false,
+      response: error,
+      taskTitle: "",
+      clientClockOffset: null,
+      taskStartTime: null,
+    };
   }
-}
+};

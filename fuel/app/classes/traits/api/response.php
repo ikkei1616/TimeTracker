@@ -16,9 +16,9 @@ trait Traits_Api_Response
     
     // サーバー時間をレスポンスに含める場合
     if ($sendServerTime) {
-      $current_time = new DateTime();
-      $current_time = $current_time->format(DateTime::ATOM);
-      $response['server_time'] =  $current_time ;
+      $current_time = new DateTime('now', new DateTimeZone('UTC'));
+      $current_time_string = $current_time->format(DateTime::ATOM);
+      $response['server_time'] =  $current_time_string ;
     }
 
     // レスポンスの基本情報
@@ -49,7 +49,7 @@ trait Traits_Api_Response
     $response = [
       'status' => 'error',
       'message' => $errorMessage,
-      'server_time' => time()
+      'server_time' => (new DateTime('now', new DateTimeZone('UTC')))->format(DateTime::ATOM),
     ];
 
     return $this->response($response, $code);
