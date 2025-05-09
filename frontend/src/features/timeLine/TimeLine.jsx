@@ -76,28 +76,30 @@ const TimeLine = () => {
 
 
   return (
-    <div className="w-9/12 ">
-      <h2 className="text-left border-2">Task Time Line</h2>
-      <div>
-        <div className="text-center border-2">
-          <p>{thisMonth+"/"+thisDate}<span>{days[thisDay]}</span></p>
+    <div className="w-9/12 h-[85vh] ">
+      <h2 className="h-[5%] py-2 text-3xl text-left  font-bold ">Task Time Line</h2>
+      <div className="h-[95%] border-4 border-mainBlack">
+        <div className="h-[5%] py-2 text-center text-3xl border-2 border-mainGray">
+          <p><span className="mr-4">{thisMonth+"/"+thisDate}</span><span>{days[thisDay]}</span></p>
         </div>
-        <div className="h-[1200px]  flex justify-between mb-60 ">
-          <div className='relative w-2/12 border-2 border-rose-300 h-[1440px]'>
-            {Array.from({length:23}).map((_, i) => {
-              return <p key={i} style={{ position:"absolute",top: `${(i+1) * 60 -10}px`,right:20}} >{i+1}:00</p>
-            })}
-          </div>
-          <div className='relative grid  grid-rows-24  w-10/12 bg-white '>
-              <div>
-                {Array.from({length:24}).map((_, i) => {
-                  return (<div key={i} className="h-[60px] border border-black">{i}</div>)
-                })}
-              </div>
-              {displayTask.map((task)=>{
-                console.log("タスクmap関数",task)
-                return <Task key={task.id} task={task} setTasks={setTasks}/>
+        <div className="h-[95%] overflow-y-auto">
+          <div className="w-full flex justify-between ">
+            <div className='relative w-2/12 border-2 border-mainGray '>
+              {Array.from({length:23}).map((_, i) => {
+                return <p key={i}  className="text-lg" style={{ position:"absolute",top: `${(i+1) * 60 -10 }px`,right:20}} >{i+1}:00</p>
               })}
+            </div>
+            <div className='relative grid  grid-rows-24  w-10/12 h-[1040xp] bg-white border-2 border-mainGray'>
+                <div>
+                  {Array.from({length:24}).map((_, i) => {
+                    return (<div key={i} className="h-[60px] border border-mainGray"></div>)
+                  })}
+                </div>
+                {displayTask.map((task)=>{
+                  console.log("タスクmap関数",task)
+                  return <Task key={task.id} task={task} setTasks={setTasks}/>
+                })}
+            </div>
           </div>
         </div>
       </div>
