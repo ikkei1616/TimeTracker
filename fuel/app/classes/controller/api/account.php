@@ -113,7 +113,7 @@ class Controller_Api_Account extends Controller_Rest
 
     public function action_checkSignIn()
     {
-        $is_singed_in = Session::get('is_signed_in');
+        $is_signed_in = Session::get('is_signed_in');
         $response = array("is_signed_in" => $is_signed_in);
         return $this->response($response);
     }
