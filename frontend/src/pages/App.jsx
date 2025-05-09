@@ -8,8 +8,11 @@ function App() {
   const [isSignIn, setIsSignIn] =useState(null);
 
   useLayoutEffect(()=>{
-    const isSignInResult = signInCheck();
-    setIsSignIn(isSignInResult);
+    const checkSignInStatus = async () => {
+      const isSignInResult =  await signInCheck();
+      setIsSignIn(isSignInResult);
+    };
+    checkSignInStatus();
   },[])
   return (
     <>
