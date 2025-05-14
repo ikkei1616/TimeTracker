@@ -9,7 +9,7 @@ const TimeLine = () => {
   const thisMonth = today.getMonth() +1;
   const thisDate = today.getDate();
   const thisDay = today.getDay();
-  const days =["SUN","MON","TUE","WED","THU","FRI","SAT"];
+  const days =["SunDay","MonDay","TuesDay","WednesDay","ThursDay","FriDay","SaturDay"];
 
   useEffect(()=>{
     const getTasks = async () => {
@@ -43,14 +43,16 @@ const TimeLine = () => {
             timeStandard.setMilliseconds(0);
             const durationMs = taskStartTime - timeStandard;
             const durationHour = ( durationMs / 3600000);
-            task.topLength = durationHour
+            task.fromTopDistance = durationHour
 
-            //タスクの長さ計算のロジック
+            //タスクコンポーネントの縦幅計算のロジック
             const elapsedMs = taskEndTime - taskStartTime;
             const elapsedHour = elapsedMs / 3600000;
             task.height = elapsedHour;
+            //タスクコンポーネントの縦幅に応じて、タスクの名前をコンポーネントに表示するかどうかを決定。
+            task.isTitleDisplay = task.height  > 2/3;
 
-            return task
+            return task;
           })
           setTasks(addedTasks);
 
@@ -58,10 +60,7 @@ const TimeLine = () => {
           //タスクの開始日が今日かどうかフィルター
           const todayAddedTask = addedTasks.filter((task)=>{
             const taskStartTime = new Date(task.start_time); //utf
-           
-            if (today.getDate() === taskStartTime.getDate()) {
-              return task
-            }
+            return today.getDate() === taskStartTime.getDate();
           });
           setDisplayTask(todayAddedTask)
         }
@@ -71,33 +70,35 @@ const TimeLine = () => {
       }
     }
     getTasks();
-  },[])
+  },[today])
 
 
 
   return (
-    <div className="w-9/12 ">
-      <h2 className="text-left border-2">Task Time Line</h2>
-      <div>
-        <div className="text-center border-2">
-          <p>{thisMonth+"/"+thisDate}<span>{days[thisDay]}</span></p>
+    <div className="w-9/12 h-[85vh] ">
+      <h2 className="h-[5%] py-2 text-3xl text-left  font-bold ">Task Time Line</h2>
+      <div className="h-[95%] border-4 border-mainBlack">
+        <div className="h-[5%] py-2 text-center text-3xl border-2 border-mainGray">
+          <p><span className="mr-4">{thisMonth+"/"+thisDate}</span><span>{days[thisDay]}</span></p>
         </div>
-        <div className="h-[1200px]  flex justify-between mb-60 ">
-          <div className='relative w-2/12 border-2 border-rose-300 h-[1440px]'>
-            {Array.from({length:23}).map((_, i) => {
-              return <p key={i} style={{ position:"absolute",top: `${(i+1) * 60 -10}px`,right:20}} >{i+1}:00</p>
-            })}
-          </div>
-          <div className='relative grid  grid-rows-24  w-10/12 bg-white '>
-              <div>
-                {Array.from({length:24}).map((_, i) => {
-                  return (<div key={i} className="h-[60px] border border-black">{i}</div>)
-                })}
-              </div>
-              {displayTask.map((task)=>{
-                console.log("タスクmap関数",task)
-                return <Task key={task.id} task={task} setTasks={setTasks}/>
+        <div className="h-[95%] overflow-y-auto">
+          <div className="w-full flex justify-between ">
+            <div className='relative w-2/12 border-2 border-mainGray '>
+              {Array.from({length:23}).map((_, i) => {
+                return <p key={i}  className="text-lg" style={{ position:"absolute",top: `${(i+1) * 60 -10 }px`,right:20}} >{i+1}:00</p>
               })}
+            </div>
+            <div className='relative grid  grid-rows-24  w-10/12 h-[1040xp] bg-white border-2 border-mainGray'>
+                <div>
+                  {Array.from({length:24}).map((_, i) => {
+                    return (<div key={i} className="h-[60px] border border-mainGray"></div>)
+                  })}
+                </div>
+                {displayTask.map((task)=>{
+                  console.log("タスクmap関数",task)
+                  return <Task key={task.id} task={task} setTasks={setTasks}/>
+                })}
+            </div>
           </div>
         </div>
       </div>
