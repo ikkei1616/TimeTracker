@@ -58,10 +58,7 @@ const TimeLine = () => {
           //タスクの開始日が今日かどうかフィルター
           const todayAddedTask = addedTasks.filter((task)=>{
             const taskStartTime = new Date(task.start_time); //utf
-           
-            if (today.getDate() === taskStartTime.getDate()) {
-              return task
-            }
+            return today.getDate() === taskStartTime.getDate();
           });
           setDisplayTask(todayAddedTask)
         }
