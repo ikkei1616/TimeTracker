@@ -49,6 +49,8 @@ const TimeLine = () => {
             const elapsedMs = taskEndTime - taskStartTime;
             const elapsedHour = elapsedMs / 3600000;
             task.height = elapsedHour;
+            //タスクコンポーネントの縦幅に応じて、タスクの名前をコンポーネントに表示するかどうかを決定。
+            task.isTitleDisplay = task.height  > 2/3;
 
             return task;
           })
