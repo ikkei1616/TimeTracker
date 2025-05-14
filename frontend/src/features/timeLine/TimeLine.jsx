@@ -9,7 +9,7 @@ const TimeLine = () => {
   const thisMonth = today.getMonth() +1;
   const thisDate = today.getDate();
   const thisDay = today.getDay();
-  const days =["SUN","MON","TUE","WED","THU","FRI","SAT"];
+  const days =["SunDay","MonDay","TuesDay","WednesDay","ThursDay","FriDay","SaturDay"];
 
   useEffect(()=>{
     const getTasks = async () => {
