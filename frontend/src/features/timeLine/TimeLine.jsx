@@ -68,7 +68,7 @@ const TimeLine = () => {
       }
     }
     getTasks();
-  },[])
+  },[today])
 
 
 
