@@ -45,12 +45,12 @@ const TimeLine = () => {
             const durationHour = ( durationMs / 3600000);
             task.fromTopDistance = durationHour
 
-            //タスクの長さ計算のロジック
+            //タスクコンポーネントの縦幅計算のロジック
             const elapsedMs = taskEndTime - taskStartTime;
             const elapsedHour = elapsedMs / 3600000;
             task.height = elapsedHour;
 
-            return task
+            return task;
           })
           setTasks(addedTasks);
 
