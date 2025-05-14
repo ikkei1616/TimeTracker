@@ -43,7 +43,7 @@ const TimeLine = () => {
             timeStandard.setMilliseconds(0);
             const durationMs = taskStartTime - timeStandard;
             const durationHour = ( durationMs / 3600000);
-            task.topLength = durationHour
+            task.fromTopDistance = durationHour
 
             //タスクの長さ計算のロジック
             const elapsedMs = taskEndTime - taskStartTime;
