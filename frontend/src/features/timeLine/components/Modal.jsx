@@ -15,9 +15,8 @@ const Modal = ({task,setIsModalOpen,setTasks}) => {
 
   return (
     <div 
-      className="absolute w-96 h-32 bg-red-600"
-      style={{top:`${task.topLength * 60 + 20}px`, left:"800px", backgroundColor:"red",color:"white",zIndex:"2",  }}
-      onClick={()=>{setIsModalOpen(false)}}
+      className="absolute w-96 h-32 p-4 border-2 left-[50%] text-mainBlack  border-lightGray bg-white rounded-lg shadow-2xl "
+      style={{top:`${task.height * 60 *0.3}px`  }}
     >
       <p>{task.title}</p>
       <button
