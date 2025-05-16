@@ -49,6 +49,7 @@ class Controller_Api_Account extends Controller_Rest
                 throw new Exception("アカウントが存在しないのにログインできちゃった");
             }
             $user_id = $current_user[1];
+            Session::rotate();
             Session::set("current_user_id",$user_id);
             return $this-> success(null,"ログインに成功しました",200);
         } else {
