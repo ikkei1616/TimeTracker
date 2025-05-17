@@ -16,6 +16,9 @@ const TimeLine = () => {
       try {
         const res = await fetch("http://localhost/api/task/tasks",{
           Post:"GET",
+          headers: {
+            'Content-Type': 'application/json',
+          },
           credentials:"include",
         });
 
