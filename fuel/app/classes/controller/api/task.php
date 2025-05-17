@@ -13,7 +13,7 @@ class Controller_Api_Task extends Controller_Rest
   {
     parent::before();
     header('Access-Control-Allow-Origin: http://localhost:5173');
-    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE,PATCH,OPTIONS');
     header('Access-Control-Allow-Headers: Content-Type');
     header('Access-Control-Allow-Credentials: true');
 
@@ -134,11 +134,14 @@ class Controller_Api_Task extends Controller_Rest
 
   public function patch_tasks($task_id = null)
   {
+
     if (!$task_id) {
       return $this->error("IDが指定されていません");
     }
 
     $date = json_decode(file_get_contents("php://input"), true);
+
+  
 
     #リクエストボディにtaskプロパティが含まれているか確認
     if (!isset($date["task"])) {
@@ -152,7 +155,6 @@ class Controller_Api_Task extends Controller_Rest
     }
 
     $title = $task["title"];
-
     try {
       $current_task_array = DB::select("*")->from("tasks")->where("id","=",$task_id)->execute()->as_array();
       $current_task = $current_task_array[0];

@@ -45,16 +45,6 @@ export const signIn = async (name,pass,setResponse) => {
       console.log("res.json()",data)
       console.log("status",data.status)
 
-      const csrfRes = await fetch("http://localhost/api/csrf/token", {
-        method: "GET",
-        credentials: "include",
-      });
-      console.log("csrfRes",csrfRes);
-      const csrfData = await csrfRes.json();
-      console.log("csrfのトークン",csrfData.csrf_token)
-
-      
-      localStorage.setItem("csrfToken", csrfData.csrf_token);
       setResponse(data.status);
 
 
