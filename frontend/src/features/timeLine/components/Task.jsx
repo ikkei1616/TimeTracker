@@ -11,7 +11,7 @@ const Task = ({task,setTasks}) => {
     <>
       <div 
         key={task.id} 
-        className="absolute w-10/12   border bg-gradient-to-r from-mainRed to-mainBlue p-0.5 border-mainBlack rounded-3xl left-1/2 transform -translate-x-1/2 bg-lightGray text-mainBlack text-2xl font-bold "
+        className="absolute w-10/12   border z-10 bg-gradient-to-r from-mainRed to-mainBlue p-0.5 border-mainBlack rounded-3xl left-1/2 transform -translate-x-1/2 bg-lightGray text-mainBlack text-2xl font-bold "
         style={{ top:`${task.fromTopDistance * 60}px`,height:`${task.height * 60}px`  }}
         onClick={()=>setIsModalOpen(true)}
       >
@@ -24,10 +24,10 @@ const Task = ({task,setTasks}) => {
         >
           {task.isTitleDisplay && task.title}
         </div>
-        { isModalOpen && 
-          <Modal task={task} setIsModalOpen={setIsModalOpen} setTasks={setTasks} />
-        }
       </div>
+      { isModalOpen && 
+        <Modal task={task} setIsModalOpen={setIsModalOpen} setTasks={setTasks} />
+      }
     </>
   )
 }
