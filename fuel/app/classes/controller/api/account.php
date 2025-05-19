@@ -21,14 +21,6 @@ class Controller_Api_Account extends Controller_Rest
         }
     }
 
-
-    public function action_index()
-    {
-        return $this->response([
-            'message' => 'Hello from FuelPHP API!',
-        ]);
-    }
-
     //ログイン機能
     public function post_login()
     {
@@ -60,7 +52,6 @@ class Controller_Api_Account extends Controller_Rest
         } else {
             return $this->error("ログインに失敗しました。");
         }
-        
     }
 
 
