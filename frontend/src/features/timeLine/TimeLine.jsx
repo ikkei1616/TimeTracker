@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect, useMemo } from "react";
 import Task from "./components/Task";
+import { apiFetcher } from "../../utils/apiFetcher";
 
 const TimeLine = () => {
   const [tasks, setTasks] = useState([]);
@@ -22,55 +23,45 @@ const TimeLine = () => {
 
   useEffect(() => {
     const getTasks = async () => {
+      
       try {
-        const res = await fetch("http://localhost/api/task/tasks", {
-          Post: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
+        const data = await apiFetcher({httpMethod:"GET",pass:"http://localhost/api/task/tasks"})
+        const addedTasks = data.tasks.map((task) => {
+          const taskStartTime = new Date(task.start_time);
+          let taskEndTime;
+          if (!data.end_time) {
+            taskEndTime = new Date();
+          }
+          taskEndTime = new Date(task.end_time);
+
+          //タスクの表示位置計算のロジック
+          const timeStandard = new Date();
+          timeStandard.setHours(0);
+          timeStandard.setMinutes(0);
+          timeStandard.setSeconds(0);
+          timeStandard.setMilliseconds(0);
+          const durationMs = taskStartTime - timeStandard;
+          const durationHour = durationMs / 3600000;
+          task.fromTopDistance = durationHour;
+
+          //タスクコンポーネントの縦幅計算のロジック
+          const elapsedMs = taskEndTime - taskStartTime;
+          const elapsedHour = elapsedMs / 3600000;
+          task.height = elapsedHour;
+          //タスクコンポーネントの縦幅に応じて、タスクの名前をコンポーネントに表示するかどうかを決定。
+          task.isTitleDisplay = task.height > 2 / 3;
+
+          return task;
         });
+        setTasks(addedTasks);
 
-        if (res.ok) {
-          const data = await res.json();
-          console.log("取得したdeta", data);
-
-          const addedTasks = data.tasks.map((task) => {
-            const taskStartTime = new Date(task.start_time);
-            let taskEndTime;
-            if (!data.end_time) {
-              taskEndTime = new Date();
-            }
-            taskEndTime = new Date(task.end_time);
-
-            //タスクの表示位置計算のロジック
-            const timeStandard = new Date();
-            timeStandard.setHours(0);
-            timeStandard.setMinutes(0);
-            timeStandard.setSeconds(0);
-            timeStandard.setMilliseconds(0);
-            const durationMs = taskStartTime - timeStandard;
-            const durationHour = durationMs / 3600000;
-            task.fromTopDistance = durationHour;
-
-            //タスクコンポーネントの縦幅計算のロジック
-            const elapsedMs = taskEndTime - taskStartTime;
-            const elapsedHour = elapsedMs / 3600000;
-            task.height = elapsedHour;
-            //タスクコンポーネントの縦幅に応じて、タスクの名前をコンポーネントに表示するかどうかを決定。
-            task.isTitleDisplay = task.height > 2 / 3;
-
-            return task;
-          });
-          setTasks(addedTasks);
-
-          //タスクの開始日が今日かどうかフィルター
-          const todayAddedTask = addedTasks.filter((task) => {
-            const taskStartTime = new Date(task.start_time); //utf
-            return today.getDate() === taskStartTime.getDate();
-          });
-          setDisplayTask(todayAddedTask);
-        }
+        //タスクの開始日が今日かどうかフィルター
+        const todayAddedTask = addedTasks.filter((task) => {
+          const taskStartTime = new Date(task.start_time); //utf
+          return today.getDate() === taskStartTime.getDate();
+        });
+        setDisplayTask(todayAddedTask);
+      
       } catch (error) {
         console.log("error", error);
       }

@@ -1,20 +1,13 @@
+import { apiFetcher } from "../../../utils/apiFetcher";
+
 export const startTask = async ({taskTitle,setResponse}) => {
   const postData = {
     "title": taskTitle,
   };
 
   try {
-    const res = await fetch("http://localhost/api/task/start",{
-      method: "POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body :JSON.stringify(postData),
-      credentials: "include"
-    });
+    const data = await apiFetcher({httpMethod:"POST",pass:"http://localhost/api/task/start",body:postData})
     
-    const data = await res.json();
-    console.log("取得データ",data)
     setResponse(data.message)
     const responseMessage = data.message;
     const receivedTaskTitle = data.tasks.title; 
@@ -23,7 +16,7 @@ export const startTask = async ({taskTitle,setResponse}) => {
     return {responseMessage,receivedTaskTitle,serverTime}
 
   } catch (error) {
-    console.log("Error: ",error);
+    console.error("Error: ",error);
     setResponse("タスクの開始失敗しました。")
   }
 }

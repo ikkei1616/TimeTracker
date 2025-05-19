@@ -1,16 +1,8 @@
+import { apiFetcher } from "../../../utils/apiFetcher";
+
 export const endTask = async ({setResponse}) => {
-
   try {
-    const res = await fetch("http://localhost/api/task/end",{
-      method:"POST",
-      headers: {
-        "Content-Type":"application/json",
-      },
-      body: JSON.stringify({}),
-      credentials: "include"
-    });
-
-    const data = await res.json();
+    const data = await apiFetcher({httpMethod:"POST",pass:"http://localhost/api/task/end"})
     setResponse(data.message);
 
   } catch (error) {
