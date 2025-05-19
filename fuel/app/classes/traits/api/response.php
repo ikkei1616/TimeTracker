@@ -51,6 +51,7 @@ trait Traits_Api_Response
   protected function error($errorMessage = 'Error', $code = 400)
   {
     $response = [
+      "csrf_token" => Security::fetch_token(),
       'status' => 'error',
       'message' => $errorMessage,
       'server_time' => (new DateTime('now', new DateTimeZone('UTC')))->format(DateTime::ATOM),
