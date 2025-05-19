@@ -1,3 +1,5 @@
+import { apiFetcher } from "../../utils/apiFetcher";
+
 export const sendPostRequest = async ({pass,email,name,setResponse}) => {
   const postData = {
     pass: pass,
@@ -6,16 +8,7 @@ export const sendPostRequest = async ({pass,email,name,setResponse}) => {
   };
 
   try {
-    const res = await fetch('http://localhost/api/account/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(postData),
-      credentials: 'include' 
-    });
-
-    const data = await res.json();
+    const data = await apiFetcher({httpMethod:"POST",pass:"http://localhost/api/account/create",body:postData});
     setResponse(data.message);
   } catch (error) {
     console.error('Error:', error);
@@ -31,25 +24,8 @@ export const signIn = async (name,pass,setResponse) => {
   };
 
   try {
-    const res = await fetch("http://localhost/api/account/login", {
-      method: "POST",
-      headers:{
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(PostData),
-      credentials: "include"
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      console.log("res.json()",data)
-      console.log("status",data.status)
-
-      setResponse(data.status);
-
-
-
-    }
+    const data = await apiFetcher({httpMethod:"POST",pass:"http://localhost/api/account/login",body:PostData});
+    setResponse(data.status);
     
   } catch (error) {
     console.error("Error",error);
@@ -59,11 +35,8 @@ export const signIn = async (name,pass,setResponse) => {
 
 
 export const signInCheck = async ()=>{
-  const res = await fetch("http://localhost/api/account/checkSignIn",{ 
-    method:"GET",
-    credentials: "include",});
-  const data =await res.json();
-  
+
+  const data = await apiFetcher({httpMethod:"GET",pass:"http://localhost/api/account/checkSignIn"})
   return data.is_signed_in
 
 }

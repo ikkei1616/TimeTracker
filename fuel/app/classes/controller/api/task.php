@@ -14,7 +14,7 @@ class Controller_Api_Task extends Controller_Rest
     parent::before();
     header('Access-Control-Allow-Origin: http://localhost:5173');
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE,PATCH,OPTIONS');
-    header('Access-Control-Allow-Headers: Content-Type');
+    header('Access-Control-Allow-Headers: Content-Type,X-CSRF-Token');
     header('Access-Control-Allow-Credentials: true');
 
     if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -26,6 +26,12 @@ class Controller_Api_Task extends Controller_Rest
 
   public function post_start()
   {
+    
+    $token = Input::headers("X-CSRF-Token");
+    if (!Security::check_token($token)) {
+      return $this->response(["error"=>"Invalid CSRF token"],403);
+    }
+
     $data = json_decode(file_get_contents("php://input"), true);
 
     Log::debug("受信データ:" . print_r(json_decode(file_get_contents("php://input"), true), true));
@@ -67,6 +73,12 @@ class Controller_Api_Task extends Controller_Rest
 
   public function post_end()
   {
+    
+    $token = Input::headers("X-CSRF-Token");
+    if (!Security::check_token($token)) {
+      return $this->response(["error"=>"Invalid CSRF token"],403);
+    }
+
     $current_time = new DateTime('now', new DateTimeZone('UTC'));
     $current_time_string = $current_time->format(DateTime::ATOM);
     Log::debug($current_time_string);
@@ -84,6 +96,12 @@ class Controller_Api_Task extends Controller_Rest
 
   public function get_tasks()
   {
+    $token = Input::headers("X-CSRF-Token");
+    if (!Security::check_token($token)) {
+      return $this->response(["error"=>"Invalid CSRF token"],403);
+    }
+    
+
     $current_user_id = Session::get("current_user_id");
     
     $format_as_utc = function(array $value):array {
@@ -113,6 +131,12 @@ class Controller_Api_Task extends Controller_Rest
 
   public function delete_tasks($task_id = null)
   {
+
+    $token = Input::headers("X-CSRF-Token");
+    if (!Security::check_token($token)) {
+      return $this->response(["error"=>"Invalid CSRF token"],403);
+    }
+
     if (!$task_id) {
       $this->error("IDが指定されていません", 400);
     }
@@ -134,6 +158,10 @@ class Controller_Api_Task extends Controller_Rest
 
   public function patch_tasks($task_id = null)
   {
+    $token = Input::headers("X-CSRF-Token");
+    if (!Security::check_token($token)) {
+      return $this->response(["error"=>"Invalid CSRF token"],403);
+    }
 
     if (!$task_id) {
       return $this->error("IDが指定されていません");
@@ -186,6 +214,12 @@ class Controller_Api_Task extends Controller_Rest
 
   public function get_current_task()
   {
+   
+    $token = Input::headers("X-CSRF-Token");
+    if (!Security::check_token($token)) {
+      return $this->response(["error"=>"Invalid CSRF token"],403);
+    }
+    
     $format_as_utc = function(array $value):array {
       Log::debug($value["end_time"]);
       $datetime_to_utc = function(string $value): string {

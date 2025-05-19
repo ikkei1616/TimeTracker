@@ -13,7 +13,11 @@ trait Traits_Api_Response
    */
   protected function success($data = null, $message = 'Success', $code = 200, $sendServerTime = true)
   {
+    //トークンをレスポンスに含める
+    $new_token = Security::fetch_token();
+    $response["csrf_token"] = $new_token;
     
+
     // サーバー時間をレスポンスに含める場合
     if ($sendServerTime) {
       $current_time = new DateTime('now', new DateTimeZone('UTC'));
@@ -47,6 +51,7 @@ trait Traits_Api_Response
   protected function error($errorMessage = 'Error', $code = 400)
   {
     $response = [
+      "csrf_token" => Security::fetch_token(),
       'status' => 'error',
       'message' => $errorMessage,
       'server_time' => (new DateTime('now', new DateTimeZone('UTC')))->format(DateTime::ATOM),

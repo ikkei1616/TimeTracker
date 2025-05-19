@@ -13,7 +13,7 @@ class Controller_Api_Account extends Controller_Rest
         parent::before();
         header('Access-Control-Allow-Origin: http://localhost:5173');
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-        header('Access-Control-Allow-Headers: Content-Type');
+        header('Access-Control-Allow-Headers: Content-Type,X-CSRF-Token');
         header('Access-Control-Allow-Credentials: true');
 
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -21,17 +21,14 @@ class Controller_Api_Account extends Controller_Rest
         }
     }
 
-
-    public function action_index()
-    {
-        return $this->response([
-            'message' => 'Hello from FuelPHP API!',
-        ]);
-    }
-
     //ログイン機能
     public function post_login()
     {
+            $token = Input::headers("X-CSRF-Token");
+            if (!Security::check_token($token)) {
+                return $this->response(["error"=>"Invalid CSRF token"],403);
+            }
+
         $data = json_decode(file_get_contents("php://input"), true);
         // 受け取ったデータを表示（必要に応じてデバッグ）
         Log::debug('受信データ: ' . print_r(json_decode(file_get_contents("php://input"), true), true));
@@ -55,7 +52,6 @@ class Controller_Api_Account extends Controller_Rest
         } else {
             return $this->error("ログインに失敗しました。");
         }
-        
     }
 
 
