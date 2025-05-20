@@ -25,10 +25,10 @@ class Controller_Api_Account extends Controller_Rest
     //ログイン機能
     public function post_login()
     {
-            $token = Input::headers("X-CSRF-Token");
-            if (!Security::check_token($token)) {
-                return $this->response(["error"=>"Invalid CSRF token"],403);
-            }
+        $token = Input::headers("X-CSRF-Token");
+        if (!Security::check_token($token)) {
+            return $this->forbiddenError($message="トークンが不正です。");
+        }
 
         $data = json_decode(file_get_contents("php://input"), true);
         // 受け取ったデータを表示（必要に応じてデバッグ）
