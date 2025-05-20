@@ -1,4 +1,5 @@
 <?php
+use Fuel\Core\Security;
 
 class Controller_Api_Account extends Controller_Rest
 {
