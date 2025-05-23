@@ -5,7 +5,7 @@ const TaskTitle= ({taskTitle,isRunning}) => {
   return (
     <div
       className={clsx(
-        "pl-20  text-center font-bold",
+        "pl-12  text-center font-bold",
         isRunning ? "text-5xl" : "text-4xl"
       )}
     >{taskTitle}</div>

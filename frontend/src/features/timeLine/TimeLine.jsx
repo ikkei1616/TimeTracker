@@ -70,20 +70,20 @@ const TimeLine = () => {
   }, [today]);
 
   return (
-    <div className="w-9/12 h-[85vh] ">
-      <h2 className="h-[5%] py-2 text-3xl text-left  font-bold ">
+    <div className="w-10/12 h-[85vh] max-w-7xl ">
+      <h2 className="h-[6%] py-2 text-3xl text-left  font-bold ">
         Task Time Line
       </h2>
-      <div className="h-[95%] border-4 border-mainBlack">
-        <div className="h-[5%] py-2 text-center text-3xl border-2 border-mainGray">
+      <div className="h-[94%] border-4 border-mainBlack">
+        <div className="h-[7%] py-2 text-center text-3xl border-b-2 border-mainGray">
           <p>
             <span className="mr-4">{thisMonth + "/" + thisDate}</span>
             <span>{days[thisDay]}</span>
           </p>
         </div>
-        <div className="h-[95%] overflow-y-auto">
+        <div className="h-[93%] overflow-y-auto">
           <div className="w-full flex justify-between ">
-            <div className="relative w-2/12 border-2 border-mainGray ">
+            <div className="relative w-2/12 border-r-2 border-mainGray ">
               {Array.from({ length: 23 }).map((_, i) => {
                 return (
                   <p
@@ -100,7 +100,7 @@ const TimeLine = () => {
                 );
               })}
             </div>
-            <div className="relative grid  grid-rows-24  w-10/12 h-[1040xp] bg-white border-2 border-mainGray">
+            <div className="relative grid  grid-rows-24  w-10/12 h-[1040xp] bg-white">
               <div>
                 {Array.from({ length: 24 }).map((_, i) => {
                   return (

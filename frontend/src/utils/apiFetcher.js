@@ -22,13 +22,13 @@ export const apiFetcher = async ({ httpMethod, pass, body = undefined }) => {
   const res = await fetch(pass,fetchOptions);
   
   const data = await res.json()
-  
+
+  localStorage.setItem("csrfToken",data.csrf_token);
+
   if (!res.ok) {
-    localStorage.setItem("csrfToken",data.csrf_token);
     throw new Error(`Error:${res.status}`);
   }
   
-  localStorage.setItem("csrfToken",data.csrf_token);
   return data;
 };
 
