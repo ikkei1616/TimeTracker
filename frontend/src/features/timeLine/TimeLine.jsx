@@ -71,7 +71,7 @@ const TimeLine = () => {
 
   return (
     <div className="w-10/12 h-[85vh] max-w-7xl ">
-      <h2 className="h-[5%] py-2 text-3xl text-left  font-bold ">
+      <h2 className="h-[6%] py-2 text-3xl text-left  font-bold ">
         Task Time Line
       </h2>
       <div className="h-[95%] border-4 border-mainBlack">
