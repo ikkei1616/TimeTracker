@@ -66,7 +66,7 @@ const TimerArea = () => {
 
   return (
     <div className="w-screen h-[9vh] border-b-2 border-black">
-      <div className="w-screen h-28 max-w-7xl mx-auto px-8 flex justify-between items-center ">
+      <div className="w-screen h-full max-w-7xl mx-auto px-8 flex justify-between items-center ">
         {isRunning ? (
           <TaskTitle taskTitle={taskTitle} isRunning={isRunning} />
         ) : (
