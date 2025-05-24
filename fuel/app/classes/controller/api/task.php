@@ -35,8 +35,6 @@ class Controller_Api_Task extends Controller_Rest
     //リクエストbodyを連想配列として取得
     $data = json_decode(file_get_contents("php://input"), true);
 
-    Log::debug("受信データ:" . print_r(json_decode(file_get_contents("php://input"), true), true));
-
     if (!isset($data["title"])) {
       return $this->error("タイトルを入力してください。");
     }
@@ -53,8 +51,6 @@ class Controller_Api_Task extends Controller_Rest
       return $this->serverError("タスクの開始失敗");
     }
   }
-
-
 
   public function post_end()
   {
@@ -199,7 +195,6 @@ class Controller_Api_Task extends Controller_Rest
 
   public function get_current_task()
   {
-   
     $token = Input::headers("X-CSRF-Token");
     if (!Security::check_token($token)) {
       return $this->response(["error"=>"Invalid CSRF token"],403);
