@@ -67,15 +67,25 @@ class Model_Task extends \Model
     }
   }
 
+  public static function get_task_by_id($task_id)
+  {
+    try {
+      $task = DB::select("*")
+        ->from("tasks")
+        ->where("id", "=", $task_id)
+        ->execute()
+        ->as_array(); 
+      return  $task;
+    } catch (Exception $e) {
+      Log::error("タスクが取得できませんでした");
+      throw $e;
+    }
+    
+  }
 
   public static function delete_tasks($task_id)
   {
     try {
-      $deleted_task = DB::select("*")
-        ->from("tasks")
-        ->where("id","=",$task_id)
-        ->execute()
-        ->as_array();
 
       $number_of_deleted_task = DB::delete("tasks")
         ->where("id","=",$task_id)
