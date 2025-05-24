@@ -134,68 +134,60 @@ class Controller_Api_Task extends Controller_Rest
       return $this->serverError("タスクの削除失敗");
     }
     
-
-
   }
-
 
 
   public function patch_tasks($task_id = null)
   {
     $token = Input::headers("X-CSRF-Token");
     if (!Security::check_token($token)) {
-      return $this->response(["error"=>"Invalid CSRF token"],403);
+      return $this->forbiddenError("トークンが不正です");
     }
 
     if (!$task_id) {
       return $this->error("IDが指定されていません");
     }
 
-    $date = json_decode(file_get_contents("php://input"), true);
+    $data = json_decode(file_get_contents("php://input"),true);
 
-  
-
-    #リクエストボディにtaskプロパティが含まれているか確認
-    if (!isset($date["task"])) {
+    if (!isset($data["task"])) {
       return $this->validationError("リクエストが不正です");
     }
+    
+    $new_task = $data["task"];
 
-    $task = $date["task"];
-
-    if ($task["title"] === "") {
-      return $this->error("タスクの名前を入力してください", 400);
+    if ($new_task["title"] === "") {
+      return $this -> error("タスク名を入力してください");
     }
 
-    $title = $task["title"];
+    $new_title = $new_task["title"];
+
     try {
-      $current_task_array = DB::select("*")->from("tasks")->where("id","=",$task_id)->execute()->as_array();
+      $current_task_array = Model_Task::get_task_by_id($task_id);
       $current_task = $current_task_array[0];
       $current_task_title = $current_task["title"];
 
-      if ($title === $current_task_title) {
-        return $this->error("タスク名を変更して下さい");
+      if ($current_task_title === $new_title) {
+        return $this->error("タスク名を編集してください");
       }
-    } catch(Exception $e) {
-      Log::debug("Error:".print_r($e->getMessage(),true));
+    } catch (Exception $e){
+      Log::error("タスクの取得失敗",$e->getMessage());
+      return $this->serverError("タスクの取得失敗");
     }
 
     try {
-      Log::debug("task_id:{$task_id}");
-      $result = DB::update("tasks")->set(["title"=>$title,])->where("id", "=", $task_id)->execute();
-      
-      if ($result === 0) {
+      $number_edited_task = Model_Task::patch_tasks($new_title,$task_id);
+      if ($number_edited_task === 0 ) {
         return $this->notFoundError("該当するタスクが存在しません");
       }
-
-      $edited_task  = DB::select("*")->from("tasks")->where("id","=",$task_id)->execute()->as_array();
-      return $this->success($edited_task, "タスクを更新しました", 200, true);
+      $edited_task = Model_Task::get_task_by_id($task_id);
+      return $this->success($edited_task,"タスク編集成功",200,true);
 
     } catch (Exception $e) {
-      Log::debug("Error:" . print_r($e->getMessage(), true));
+      Log::error("タスクの編集失敗:",$e->getMessage());
       return $this->serverError("タスクの編集失敗");
     }
   }
-
 
 
 
