@@ -42,11 +42,11 @@ class Controller_Api_Account extends Controller_Rest
         $pass = $data["pass"];
 
         if (Auth::login($name,$pass)) {            
-            $current_user = Auth::get_user_id($name,$pass);
-            if (!isset($current_user[1])){
-                throw new Exception("アカウントが存在しないのにログインできちゃった");
+            $current_user_id_array = Auth::get_user_id($name,$pass);
+            if (!isset($current_user_id_array[1])){
+                throw new Exception("アカウントが存在しないのにログイン完了");
             }
-            $user_id = $current_user[1];
+            $user_id = $current_user_id_array[1];
             Session::rotate();
             Session::set("current_user_id",$user_id);
             return $this-> success(null,"ログインに成功しました",200);
