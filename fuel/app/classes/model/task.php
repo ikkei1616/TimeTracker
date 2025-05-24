@@ -5,6 +5,7 @@ use Fuel\Core\DB;
 
 class Model_Task extends \Model
 {
+  public function before()
   {
     parent::before();
     header('Access-Control-Allow-Origin: http://localhost:5173');
