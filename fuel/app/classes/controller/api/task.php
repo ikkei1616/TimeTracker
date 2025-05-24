@@ -42,26 +42,10 @@ class Controller_Api_Task extends Controller_Rest
 
     $title = $data["title"];
     $user_id = Session::get("current_user_id");
-    $start_time = new DateTime('now', new DateTimeZone('UTC'));
-    $start_time_string = $start_time->format(DateTime::ATOM);
 
+    //タスク情報($title,$user_id,$start_time)をDBに保存、レスポンスを整形
     try {
-
-      $response_data = array(
-        "title" => $title,
-        "user_id" => $user_id,
-        "start_time" => $start_time_string,
-        "end_time" => null,
-      );
-
-      DB::insert("tasks")->set(
-        array(
-          "title" => $title,
-          "user_id" => $user_id,
-          "start_time" => $start_time_string,
-        )
-      )->execute();
-
+      $response_data = Model_Task::start_task($title,$user_id);
       return $this->success($response_data, "タスクの開始成功", 201, true);
     } catch (Exception $e) {
       Log::debug("Error", $e->getMessage());
