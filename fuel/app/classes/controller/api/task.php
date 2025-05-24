@@ -49,7 +49,7 @@ class Controller_Api_Task extends Controller_Rest
       $response_data = Model_Task::start_task($title,$user_id);
       return $this->success($response_data, "タスクの開始成功", 201, true);
     } catch (Exception $e) {
-      Log::debug("Error", $e->getMessage());
+      Log::error("API start_task error:", $e->getMessage());
       return $this->serverError("タスクの開始失敗");
     }
   }
