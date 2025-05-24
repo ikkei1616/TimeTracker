@@ -84,13 +84,7 @@ class Controller_Api_Account extends Controller_Rest
         }
 
         //既存ユーザーかどうか確認
-        $existUsers = DB::select("email")
-            ->from("users")
-            ->where("email", "=", $email)
-            ->execute()
-            ->as_array();
-
-        if (count($existUsers) > 0) {
+        $is_exists_user = Model_Account::exists_by_email($email);
             return $this->error("このメールアドレスは既に使用されています", 409);
         }
 
