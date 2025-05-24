@@ -5,18 +5,6 @@ use Fuel\Core\DB;
 
 class Model_Task extends \Model
 {
-  public function before()
-  {
-    parent::before();
-    header('Access-Control-Allow-Origin: http://localhost:5173');
-    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE,PATCH,OPTIONS');
-    header('Access-Control-Allow-Headers: Content-Type,X-CSRF-Token');
-    header('Access-Control-Allow-Credentials: true');
-
-    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-      exit; // Preflightリクエストはここで終了
-    }
-  }
 
   public static function start_task($title,$user_id)
   {
@@ -75,6 +63,31 @@ class Model_Task extends \Model
       return $tasks_array;
     } catch (Exception $e) {
       Log::error("タスクの取得に失敗しました:",$e->getMessage());
+      throw $e;
+    }
+  }
+
+
+  public static function delete_tasks($task_id)
+  {
+    try {
+      $deleted_task = DB::select("*")
+        ->from("tasks")
+        ->where("id","=",$task_id)
+        ->execute()
+        ->as_array();
+
+      $number_of_deleted_task = DB::delete("tasks")
+        ->where("id","=",$task_id)
+        ->execute();
+
+      return array(
+        "deleted_task"=>$deleted_task,
+        "number_of_deleted_task"=>$number_of_deleted_task
+      );
+        
+    } catch (Exception $e) {
+      Log::debug("タスク削除失敗:",$e->getMessage());
       throw $e;
     }
   }
