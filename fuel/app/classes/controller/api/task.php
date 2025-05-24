@@ -122,9 +122,9 @@ class Controller_Api_Task extends Controller_Rest
     }
 
     try {
-      $result_array = Model_Task::delete_tasks($task_id);
-      $number_of_deleted_task = $result_array["number_of_deleted_task"];
-      $deleted_task = $result_array["deleted_task"];
+      $deleted_task = Model_task::get_task_by_id(($task_id));
+      $number_of_deleted_task = Model_Task::delete_tasks($task_id);
+    
       if ($number_of_deleted_task === 0) {
         $this->serverError("該当のタスクが存在しません");
       }
