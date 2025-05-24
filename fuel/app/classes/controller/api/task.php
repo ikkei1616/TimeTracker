@@ -118,27 +118,27 @@ class Controller_Api_Task extends Controller_Rest
 
     $token = Input::headers("X-CSRF-Token");
     if (!Security::check_token($token)) {
-      return $this->response(["error"=>"Invalid CSRF token"],403);
-    }
-
-    if (!$task_id) {
-      $this->error("IDが指定されていません", 400);
+      return $this->forbiddenError("トークンが不正です");
     }
 
     try {
-      $task = DB::select("*")->from("tasks")->where("id", "=", $task_id)->execute()->as_array();
-      $result = DB::delete("tasks")->where("id", "=", $task_id)->execute();
-
-      if ($result === 1) {
-        return $this->success($task, "タスクの削除成功", 200, false);
-      } else {
-        return $this->notFoundError("該当のタスクが存在しません");
+      $result_array = Model_Task::delete_tasks($task_id);
+      $number_of_deleted_task = $result_array["number_of_deleted_task"];
+      $deleted_task = $result_array["deleted_task"];
+      if ($number_of_deleted_task === 0) {
+        $this->serverError("該当のタスクが存在しません");
       }
+      return $this->success($deleted_task,"タスクの削除成功",200,true);
     } catch (Exception $e) {
-      Log::debug("Error:" . print_r($e->getMessage(), true));
-      return $this->error("タスクの削除失敗");
+      Log::error("Error:",$e->getMessage());
+      return $this->serverError("タスクの削除失敗");
     }
+    
+
+
   }
+
+
 
   public function patch_tasks($task_id = null)
   {
@@ -195,6 +195,9 @@ class Controller_Api_Task extends Controller_Rest
       return $this->serverError("タスクの編集失敗");
     }
   }
+
+
+
 
   public function get_current_task()
   {
