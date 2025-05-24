@@ -91,10 +91,7 @@ class Model_Task extends \Model
         ->where("id","=",$task_id)
         ->execute();
 
-      return array(
-        "deleted_task"=>$deleted_task,
-        "number_of_deleted_task"=>$number_of_deleted_task
-      );
+      return $number_of_deleted_task;
         
     } catch (Exception $e) {
       Log::debug("タスク削除失敗:",$e->getMessage());
