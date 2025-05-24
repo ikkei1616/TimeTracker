@@ -18,7 +18,7 @@ class Controller_Api_Account extends Controller_Rest
         header('Access-Control-Allow-Credentials: true');
 
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-            exit; // Preflightリクエストはここで終了
+           exit; // Preflightリクエストはここで終了
         }
     }
 
@@ -31,8 +31,6 @@ class Controller_Api_Account extends Controller_Rest
         }
 
         $data = json_decode(file_get_contents("php://input"), true);
-        // 受け取ったデータを表示（必要に応じてデバッグ）
-        Log::debug('受信データ: ' . print_r(json_decode(file_get_contents("php://input"), true), true));
 
         if (!isset($data["name"],$data["pass"])) {
             return $this ->error("フォームの入力が不正です。");
@@ -42,11 +40,11 @@ class Controller_Api_Account extends Controller_Rest
         $pass = $data["pass"];
 
         if (Auth::login($name,$pass)) {            
-            $current_user = Auth::get_user_id($name,$pass);
-            if (!isset($current_user[1])){
-                throw new Exception("アカウントが存在しないのにログインできちゃった");
+            $current_user_id_array = Auth::get_user_id($name,$pass);
+            if (!isset($current_user_id_array[1])){
+                throw new Exception("アカウントが存在しないのにログイン完了");
             }
-            $user_id = $current_user[1];
+            $user_id = $current_user_id_array[1];
             Session::rotate();
             Session::set("current_user_id",$user_id);
             return $this-> success(null,"ログインに成功しました",200);
@@ -59,10 +57,8 @@ class Controller_Api_Account extends Controller_Rest
     //POSTのテスト
     public function post_create()
     {
+        
         $data = json_decode(file_get_contents("php://input"), true);
-        Log::debug('受信データ: ' . print_r(json_decode(file_get_contents("php://input"), true), true));
-        // 受け取ったデータを表示（必要に応じてデバッグ）
-        $result = "";
 
         //リクエストデータが正しいか確認
         if (!isset($data["name"], $data["pass"], $data["email"])) {
@@ -84,21 +80,17 @@ class Controller_Api_Account extends Controller_Rest
         }
 
         //既存ユーザーかどうか確認
-        $existUsers = DB::select("email")
-            ->from("users")
-            ->where("email", "=", $email)
-            ->execute()
-            ->as_array();
-
-        if (count($existUsers) > 0) {
+        $is_exists_user = Model_Account::exists_by_email($email);
+            
+        if ($is_exists_user) {
             return $this->error("このメールアドレスは既に使用されています", 409);
         }
 
         try {
             Auth::create_user($name, $password, $email, 1);
-            $isLogin = Auth::login($name,$password);
-            $id_info_array = Auth::get_user_id();
-            $current_user_id = $id_info_array[1];
+            $is_login = Auth::login($name,$password);
+            $id__array = Auth::get_user_id();
+            $current_user_id = $id__array[1];
             Session::set("current_user_id",$current_user_id);
             Session::set("is_signed_in",true);
             return $this->success(null, "アカウント作成成功", 201, false);
