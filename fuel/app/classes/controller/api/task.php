@@ -4,7 +4,6 @@ use Fuel\Core\Debug;
 
 class Controller_Api_Task extends Controller_Rest
 {
-
   use Traits_Api_Response;
 
   protected $format = "json";
@@ -95,32 +94,20 @@ class Controller_Api_Task extends Controller_Rest
   {
     $token = Input::headers("X-CSRF-Token");
     if (!Security::check_token($token)) {
-      return $this->response(["error"=>"Invalid CSRF token"],403);
+      $this->forbiddenError("Invalid CSRF token");
     }
-    
 
+    // 現在ログインしているユーザーのid取得
     $current_user_id = Session::get("current_user_id");
-    
-    $format_as_utc = function(array $value):array {
-      Log::debug($value["end_time"]);
-      $datetime_to_utc = function(string $value): string {
-        return (new DateTime($value, new DateTimeZone('UTC')))->format(DateTime::ATOM);
-      };
-      $value["start_time"] = $datetime_to_utc($value["start_time"]);
-      $value["end_time"] = $value["end_time"] != null ? $datetime_to_utc($value["end_time"]) : null;
-
-      return $value;
-    };
 
     try {
-      $tasks = DB::select("*")->from("tasks")->where("user_id", "=", $current_user_id)->execute()->as_array();
+      $tasks = Model_Task::get_tasks($current_user_id);
 
-      $tasks = array_map($format_as_utc,$tasks);
+      $tasks = array_map([$this,"formatTaskWithUtc"],$tasks);
 
-      return $this->success($tasks, "タスクの取得成功", 200, false);
+      return $this->success($tasks,"タスクの取得成功",200,false);
     } catch (Exception $e) {
       Log::error($e);
-      Log::debug("Error:" . print_r($e->getMessage(), true));
       return $this->serverError("タスクの取得失敗");
     }
   }
