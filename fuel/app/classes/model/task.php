@@ -28,7 +28,6 @@ class Model_Task extends \Model
         array(
           "title" => $title,
           "user_id"=> $user_id,
-          //質問 ここなんでstringに書き換えるの？
           "start_time"=>$start_time_string
         )
       )->execute();
@@ -46,5 +45,22 @@ class Model_Task extends \Model
     }
   }
 
+  public static function end_task($current_user_id) 
+  {
+    $current_time = new DateTime("now", new DateTimeZone("UTC"));
+    $current_time_string = $current_time->format(DateTime::ATOM);
 
+    try {
+      $number_of_update = DB::update("tasks")
+            ->set(["end_time"=>$current_time_string])
+            ->where("end_time","IS",DB::expr("NULL"))
+            ->and_where("user_id","=",$current_user_id)
+            ->execute();
+      return $number_of_update;
+      
+    } catch (Exception $e) {
+      Log::debug("タスクの終了失敗:",$e->getMessage());
+      throw $e;
+    }
+  }
 }
