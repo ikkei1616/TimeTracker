@@ -23,6 +23,10 @@ class Controller_Api_Task extends Controller_Rest
   }
 
 
+  private function convertToUtc(string $datetime): string
+  {
+    return (new DateTime($datetime, new DateTimeZone("UTC")))->format(DateTime::ATOM);
+  } 
 
   public function post_start()
   {
