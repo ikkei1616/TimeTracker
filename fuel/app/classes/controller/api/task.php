@@ -197,22 +197,11 @@ class Controller_Api_Task extends Controller_Rest
     if (!Security::check_token($token)) {
       return $this->response(["error"=>"Invalid CSRF token"],403);
     }
-    
-    $format_as_utc = function(array $value):array {
-      Log::debug($value["end_time"]);
-      $datetime_to_utc = function(string $value): string {
-        return (new DateTime($value, new DateTimeZone('UTC')))->format(DateTime::ATOM);
-      };
-      $value["start_time"] = $datetime_to_utc($value["start_time"]);
-      $value["end_time"] = $value["end_time"] != null ? $datetime_to_utc($value["end_time"]) : null;
-
-      return $value;
-    };
 
     try {
       $current_user_id = Session::get("current_user_id");
-      $current_task = DB::select("*")->from("tasks")->where("user_id","=",$current_user_id)->and_where("end_time", "IS", DB::expr('NULL'))->execute()->as_array();
-      $current_task = array_map($format_as_utc,$current_task);
+      $current_task = Model_Task::get_current_task($current_user_id);
+      $current_task = array_map([$this,"formatTaskWithUtc"],$current_task);
 
       if ($current_task == []) {
         return $this->serverError("進行中のタスクがありませんでした。");
