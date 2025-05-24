@@ -52,27 +52,29 @@ class Controller_Api_Task extends Controller_Rest
     }
   }
 
+
   public function post_end()
   {
-    
+    //csrfトークンが一致しているかどうかを検査
     $token = Input::headers("X-CSRF-Token");
     if (!Security::check_token($token)) {
-      return $this->response(["error"=>"Invalid CSRF token"],403);
+      return $this-> response(["error"=>"Invalid"]);
     }
-
-    $current_time = new DateTime('now', new DateTimeZone('UTC'));
-    $current_time_string = $current_time->format(DateTime::ATOM);
-    Log::debug($current_time_string);
+    //現在ログインしているユーザーのidを取得
     $current_user_id = Session::get("current_user_id");
-    Log::debug("current_user_id" . print_r($current_user_id, true));
-
+    
+    //DBのtaskレコードをupdate
     try {
-      DB::update("tasks")->set(["end_time" => $current_time_string])->where("end_time", "IS", DB::expr('NULL'))->and_where("user_id", "=", $current_user_id)->execute();
-      return $this->success(null, "タスクの終了成功", 200, false);
-    } catch (Exception $e) {;
-      Log::debug("Error:" . print_r($e->getMessage(), true));
+      $number_of_update_result = Model_Task::end_task($current_user_id);
+      if ($number_of_update_result === 0) {
+        return $this->serverError("終了すべきタスクが存在しません");
+      }
+      return $this->success(null,"タスクの終了成功",200,true);
+    } catch (Exception $e) {
+      Log::error("API end_task error:", $e->getMessage());
       return $this->serverError("タスクの終了失敗");
     }
+
   }
 
   public function get_tasks()
