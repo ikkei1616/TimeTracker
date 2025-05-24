@@ -18,7 +18,7 @@ class Controller_Api_Account extends Controller_Rest
         header('Access-Control-Allow-Credentials: true');
 
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-            exit; // Preflightリクエストはここで終了
+           exit; // Preflightリクエストはここで終了
         }
     }
 
@@ -31,8 +31,6 @@ class Controller_Api_Account extends Controller_Rest
         }
 
         $data = json_decode(file_get_contents("php://input"), true);
-        // 受け取ったデータを表示（必要に応じてデバッグ）
-        Log::debug('受信データ: ' . print_r(json_decode(file_get_contents("php://input"), true), true));
 
         if (!isset($data["name"],$data["pass"])) {
             return $this ->error("フォームの入力が不正です。");
@@ -59,10 +57,8 @@ class Controller_Api_Account extends Controller_Rest
     //POSTのテスト
     public function post_create()
     {
+        
         $data = json_decode(file_get_contents("php://input"), true);
-        Log::debug('受信データ: ' . print_r(json_decode(file_get_contents("php://input"), true), true));
-        // 受け取ったデータを表示（必要に応じてデバッグ）
-        $result = "";
 
         //リクエストデータが正しいか確認
         if (!isset($data["name"], $data["pass"], $data["email"])) {
@@ -85,6 +81,7 @@ class Controller_Api_Account extends Controller_Rest
 
         //既存ユーザーかどうか確認
         $is_exists_user = Model_Account::exists_by_email($email);
+            
         if ($is_exists_user) {
             return $this->error("このメールアドレスは既に使用されています", 409);
         }
