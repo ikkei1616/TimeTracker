@@ -63,4 +63,20 @@ class Model_Task extends \Model
       throw $e;
     }
   }
+
+  public static function get_tasks($current_user_id)
+  {
+    try {
+      $tasks_array = DB::select("*")
+        ->from("tasks")
+        ->where("user_id","=",$current_user_id)
+        ->execute()
+        ->as_array();
+      return $tasks_array;
+    } catch (Exception $e) {
+      Log::error("タスクの取得に失敗しました:",$e->getMessage());
+      throw $e;
+    }
+  }
+
 }
