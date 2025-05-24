@@ -26,12 +26,13 @@ class Controller_Api_Task extends Controller_Rest
 
   public function post_start()
   {
-    
+    // csrf対策 トークンの確認
     $token = Input::headers("X-CSRF-Token");
     if (!Security::check_token($token)) {
       return $this->response(["error"=>"Invalid CSRF token"],403);
     }
 
+    //リクエストbodyを連想配列として取得
     $data = json_decode(file_get_contents("php://input"), true);
 
     Log::debug("受信データ:" . print_r(json_decode(file_get_contents("php://input"), true), true));
