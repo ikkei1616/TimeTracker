@@ -28,6 +28,16 @@ class Controller_Api_Task extends Controller_Rest
     return (new DateTime($datetime, new DateTimeZone("UTC")))->format(DateTime::ATOM);
   } 
 
+  private function formatTaskWithUtc(array $task): array
+  {
+    $has_end_time = $task["end_time"] !== null;
+
+    $task["start_time"] = $this->convertToUtc($task["start_time"]);
+    $task["end_time"] =  $has_end_time ? $this->convertToUtc($task["end_time"]) : null;
+
+    return $task;
+  }
+
   public function post_start()
   {
     // csrf対策 トークンの確認
