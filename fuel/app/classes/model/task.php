@@ -112,4 +112,21 @@ class Model_Task extends \Model
       throw $e;
     }
   }
+
+  public static function get_current_task($current_user_id)
+  {
+    try {
+      $current_task = DB::select("*")
+        ->from("tasks")
+        ->where("user_id","=",$current_user_id)
+        ->and_where("end_time","IS",DB::expr("NUll"))
+        ->execute()
+        ->as_array();  
+      Log::debug("current_task".print_r($current_task,true));
+      return $current_task;
+    } catch (Exception $e) {
+      Log::error("現在のタスク取得失敗:",$e->getMessage());
+      throw $e;
+    }
+  }
 }
