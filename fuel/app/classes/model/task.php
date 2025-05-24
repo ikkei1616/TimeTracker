@@ -92,4 +92,17 @@ class Model_Task extends \Model
     }
   }
 
+  public static function patch_tasks($new_title,$task_id)
+  {
+    try {
+      $number_edited_task = DB::update("tasks")
+        ->set(["title"=>$new_title])
+        ->where("id","=",$task_id)
+        ->execute();
+      return $number_edited_task;
+    } catch (Exception $e) {
+      Log::error("タスクの修正失敗",$e->getMessage());
+      throw $e;
+    }
+  }
 }
