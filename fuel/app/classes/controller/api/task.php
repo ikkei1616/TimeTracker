@@ -29,7 +29,7 @@ class Controller_Api_Task extends Controller_Rest
     // csrf対策 トークンの確認
     $token = Input::headers("X-CSRF-Token");
     if (!Security::check_token($token)) {
-      return $this->response(["error"=>"Invalid CSRF token"],403);
+      return  $this->forbiddenError("CSRFトークンが不正です");
     }
 
     //リクエストbodyを連想配列として取得
