@@ -5,6 +5,18 @@ use Fuel\Core\DB;
 
 class Model_Task extends \Model
 {
+  {
+    parent::before();
+    header('Access-Control-Allow-Origin: http://localhost:5173');
+    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE,PATCH,OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type,X-CSRF-Token');
+    header('Access-Control-Allow-Credentials: true');
+
+    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+      exit; // Preflightリクエストはここで終了
+    }
+  }
+
   public static function start_task($title,$user_id)
   {
     $start_time = new DateTime("now",new DateTimeZone("UTC"));
