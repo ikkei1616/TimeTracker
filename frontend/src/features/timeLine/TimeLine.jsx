@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import Task from "./components/Task";
 import { apiFetcher } from "../../utils/apiFetcher";
 import TimeDisplay from "./components/TimeDisplay";
+import DateDisplay  from "./components/DateDisplay";
 
 const TimeLine = () => {
   const [tasks, setTasks] = useState([]);
@@ -76,12 +77,7 @@ const TimeLine = () => {
         Task Time Line
       </h2>
       <div className="h-[94%] border-4 border-mainBlack">
-        <div className="h-[7%] py-2 text-center text-3xl border-b-2 border-mainGray">
-          <p>
-            <span className="mr-4">{thisMonth + "/" + thisDate}</span>
-            <span>{days[thisDay]}</span>
-          </p>
-        </div>
+        <DateDisplay thisMonth={thisMonth} thisDate={thisDate} days={days} thisDay={thisDay}></DateDisplay>
         <div className="h-[93%] overflow-y-auto">
           <div className="w-full flex justify-between ">
             <TimeDisplay/>
