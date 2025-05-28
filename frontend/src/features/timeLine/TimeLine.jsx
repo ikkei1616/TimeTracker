@@ -1,7 +1,7 @@
-import React from "react";
 import { useState, useEffect, useMemo } from "react";
 import Task from "./components/Task";
 import { apiFetcher } from "../../utils/apiFetcher";
+import TimeDisplay from "./components/TimeDisplay";
 
 const TimeLine = () => {
   const [tasks, setTasks] = useState([]);
@@ -19,7 +19,7 @@ const TimeLine = () => {
     "FriDay",
     "SaturDay",
   ];
-  
+
 
   useEffect(() => {
     const getTasks = async () => {
@@ -48,6 +48,7 @@ const TimeLine = () => {
           const elapsedMs = taskEndTime - taskStartTime;
           const elapsedHour = elapsedMs / 3600000;
           task.height = elapsedHour;
+
           //タスクコンポーネントの縦幅に応じて、タスクの名前をコンポーネントに表示するかどうかを決定。
           task.isTitleDisplay = task.height > 2 / 3;
 
@@ -83,23 +84,7 @@ const TimeLine = () => {
         </div>
         <div className="h-[93%] overflow-y-auto">
           <div className="w-full flex justify-between ">
-            <div className="relative w-2/12 border-r-2 border-mainGray ">
-              {Array.from({ length: 23 }).map((_, i) => {
-                return (
-                  <p
-                    key={i}
-                    className="text-lg"
-                    style={{
-                      position: "absolute",
-                      top: `${(i + 1) * 60 - 10}px`,
-                      right: 20,
-                    }}
-                  >
-                    {i + 1}:00
-                  </p>
-                );
-              })}
-            </div>
+            <TimeDisplay/>
             <div className="relative grid  grid-rows-24  w-10/12 h-[1040xp] bg-white">
               <div>
                 {Array.from({ length: 24 }).map((_, i) => {
