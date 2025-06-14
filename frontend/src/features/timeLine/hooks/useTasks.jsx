@@ -23,7 +23,8 @@ export const useTasks = () => {
       }
     }
     const filteredDisplayedTasks = tasks.filter((task) => {
-      const isFilter = task.start_time === dateFilter.getDate();
+      const startTime = new Date(task.start_time)
+      const isFilter = startTime.getDate() === dateFilter.getDate();
       return isFilter;
     });
     setDisplayedTasks(filteredDisplayedTasks);
