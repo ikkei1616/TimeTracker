@@ -1,6 +1,6 @@
-
 import Task from "../components/Task";
-const TaskDisplay = ({displayTask,setTasks}) => {
+
+const TaskDisplay = ({ displayTask, setTasks }) => {
   return (
     <div className="relative grid  grid-rows-24  w-10/12 h-[1040xp] bg-white">
       <div>
