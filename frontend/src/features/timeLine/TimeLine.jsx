@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import Task from "./components/Task";
 import { apiFetcher } from "../../utils/apiFetcher";
 import TimeDisplay from "./components/TimeDisplay";
+import TaskDisplay from "./components/TaskDisplay";
 import DateDisplay  from "./components/DateDisplay";
 
 const TimeLine = () => {
@@ -81,22 +82,7 @@ const TimeLine = () => {
         <div className="h-[93%] overflow-y-auto">
           <div className="w-full flex justify-between ">
             <TimeDisplay/>
-            <div className="relative grid  grid-rows-24  w-10/12 h-[1040xp] bg-white">
-              <div>
-                {Array.from({ length: 24 }).map((_, i) => {
-                  return (
-                    <div
-                      key={i}
-                      className="h-[60px] border border-mainGray"
-                    ></div>
-                  );
-                })}
-              </div>
-              {displayTask.map((task) => {
-                console.log("タスクmap関数", task);
-                return <Task key={task.id} task={task} setTasks={setTasks} />;
-              })}
-            </div>
+            <TaskDisplay displayTask={displayTask} setTasks={setTasks}/>
           </div>
         </div>
       </div>
