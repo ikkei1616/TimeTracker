@@ -19,7 +19,7 @@ const Modal = ({ task, setIsModalOpen, setTasks }) => {
   };
 
   const handleEdit = () => {
-    taskEdit({ taskId, title: reName }).then((resStatus, editedTask) => {
+    taskEdit({ taskId, title: reName }).then(({resStatus, editedTask}) => {
       setTasks(editedTask);
       console.log(resStatus);
     });
